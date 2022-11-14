@@ -8,20 +8,25 @@ namespace ChessWPF.MVVM.Model
 {
     internal class Tile
     {
-        public BlackWhite TileColor { get; private set; }
-        public bool IsPossibleToMove { get; set; }
+        public MainColors TileColor { get; private set; }
+        
         public ChessPiece? ChessPiece { get; set; } = null;
-        public Tile(BlackWhite tileColor, ChessPiece? chessPiece)
+        public Tile(MainColors tileColor, ChessPiece? chessPiece)
         {
             ChessPiece = chessPiece;
             TileColor = tileColor;
         }
 
-
+        public void IsPossibleToMove(bool option)
+        {
+            if (option)
+                TileColor = MainColors.Pink;
+        }
         public bool isOccupied()
         {
             return ChessPiece != null;
         }
+
 
 
     }

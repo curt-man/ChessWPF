@@ -5,12 +5,29 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\chess-board.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\chess-board.ico" />
+    <None Remove="Resources\Font Awesome 6 Free Solid.otf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\chess-board.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="MVVM\Icons\" />
-    <Folder Include="Themes\" />
-    <Folder Include="MVVM\ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\chess-board.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Font Awesome 6 Free Solid.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

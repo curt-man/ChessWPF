@@ -23,16 +23,35 @@ namespace ChessWPF
     {
         Random random = new Random();
         Board firstBoard;
-        Board secondBoard;
         
         public MainWindow()
         {
             InitializeComponent();
+            firstBoard = new Board(MainColors.White);
         }
-
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            Application.Current.Shutdown();
+        }
+
+        private void MinimizeWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+
+        }
+
+        private void MaximizeWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow.WindowState == WindowState.Maximized)
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+            else
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+        }
+
+        private void HeaderPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

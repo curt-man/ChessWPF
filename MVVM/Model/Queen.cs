@@ -9,7 +9,7 @@ namespace ChessWPF.MVVM.Model
     internal class Queen : ChessPiece
     {
         public override int Power => 9;
-        public Queen(BlackWhite pieceColor) : base(pieceColor)
+        public Queen(MainColors pieceColor) : base(pieceColor)
         {
 
         }

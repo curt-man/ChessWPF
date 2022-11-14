@@ -8,12 +8,14 @@ namespace ChessWPF.MVVM.Model
 {
     internal abstract class ChessPiece
     {
-        public BlackWhite PieceColor { get; private set; }
+        public MainColors PieceColor { get; protected set; }
         public virtual int Power { get; }
 
-        public ChessPiece(BlackWhite pieceColor)
+        public ChessPiece(MainColors pieceColor)
         {
             PieceColor = pieceColor;
         }
+
+        public abstract int[,] Move(int column, int row);
     }
 }

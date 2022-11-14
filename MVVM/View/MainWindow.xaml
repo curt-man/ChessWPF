@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessWPF"
+        xmlns:local="clr-namespace:ChessWPF" xmlns:viewmodel="clr-namespace:ChessWPF.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="800" 
@@ -15,30 +15,102 @@
         FontFamily="Montserrat"
         FontSize="12"
         Foreground="#FFFFFF">
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="9*"/>
             <RowDefinition Height="60*"/>
-            <RowDefinition Height="7*"/>
+            <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="HeaderButtons"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="0"
-                    HorizontalAlignment="Right">
-            <Button x:Name="CloseWindowButton"
-                    Width="30"
-                    Height="30"
-                    Foreground="#FFFFFF"
-                    Background="Transparent"
-                    FontSize="20"
-                    Content="X"
-                    Click="CloseWindowButton_Click"/>
-        </StackPanel>
+        <!--<Label FontFamily="Font Awesome 6 Free Solid"
+               Content="&#xf43a;"
+               Grid.Column="1"
+               Grid.Row="2"
+               FontSize="100"
+               Foreground="#FFFFFF"/>-->
+        <Border x:Name="HeaderPanel"
+                Grid.ColumnSpan="2"
+                Grid.Row="0"
+                Background="#292929"
+                MouseDown="HeaderPanel_MouseDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="LogoName"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+                    <Button x:Name="Logo"
+                           Content="&#xf43c;"
+                           FontFamily="Font Awesome 6 Free Solid"
+                           Foreground="#FFFFFF"
+                           Padding="0"
+                           Height="30"
+                           Width="30"
+                           BorderBrush="Transparent"
+                           Background="Transparent"
+                           FontSize="20"/>
+                    <Label Foreground="#FFFFFF"
+                           Padding="0 3"
+                           FontWeight="DemiBold"
+                           Height="20"
+                           BorderBrush="Transparent"
+                           Background="Transparent"
+                           Content="ChessWPF"/>
+                </StackPanel>
+                <StackPanel x:Name="HeaderButtons"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Grid.Column="2">
+                    <Button x:Name="MinimizeWindowButton"
+                            Width="30"
+                            Height="30"
+                            BorderThickness="0"
+                            Padding="0"
+                            FontFamily="Font Awesome 6 Free Solid"
+                            Foreground="#FFFFFF"
+                            Background="Transparent"
+                            FontSize="20"
+                            Content="&#xf2d1;"
+                            Click="MinimizeWindowButton_Click"
+                            BorderBrush="#393939"/>
+                    <Button x:Name="MaximizeWindowButton"
+                            Width="30"
+                            Height="30"
+                            BorderThickness="0"
+                            Padding="0"
+                            FontFamily="Font Awesome 6 Free Solid"
+                            Foreground="#FFFFFF"
+                            Background="Transparent"
+                            FontSize="20"
+                            Content="&#xf2d0;"
+                            Click="MaximizeWindowButton_Click"
+                            BorderBrush="#393939"/>
+                    <Button x:Name="CloseWindowButton"
+                            Width="30"
+                            Height="30"
+                            BorderThickness="0"
+                            Padding="0"
+                            FontFamily="Font Awesome 6 Free Solid"
+                            Foreground="#FFFFFF"
+                            Background="Transparent"
+                            FontSize="20"
+                            Content="&#xf410;"
+                            Click="CloseWindowButton_Click"
+                            BorderBrush="#393939"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <Label x:Name="FirstBoardTimer"
                Content="4:21"
                HorizontalAlignment="Center"
@@ -47,5 +119,41 @@
                Grid.Row="1"
                Foreground="#FFFFFF"
                FontSize="32"/>
+        <Border x:Name="FirstBoard"
+                Grid.Column="0"
+                Grid.Row="2"
+                Background="#FFFFFF"
+                BorderThickness="30"
+                BorderBrush="#292929">
+            <!--<Grid x:Name="FirstBoardGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Rectangle Fill="Black"/>
+            </Grid>-->
+            <ListView x:Name="FirstBoardTiles"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     ItemsSource="{Binding firstBoard}"
+                     ItemContainerStyle="{StaticResource TileCanvas}"/>
+        </Border>
+
     </Grid>
 </Window>

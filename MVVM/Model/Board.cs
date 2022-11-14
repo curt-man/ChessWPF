@@ -10,7 +10,7 @@ namespace ChessWPF.MVVM.Model
     {
         Tile[,] board = new Tile[8, 8];
 
-        public Board(BlackWhite PlayerColor)
+        public Board(MainColors PlayerColor)
         {
             CreateNewBoard();
             CreateNewPieces(PlayerColor);
@@ -23,22 +23,22 @@ namespace ChessWPF.MVVM.Model
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    board[i, j] = new Tile((BlackWhite)((i + j) % 2), null);
+                    board[i, j] = new Tile((MainColors)((i + j) % 2), null);
                 }
             }
         }
 
 
         // Method takes player's color and sets all Chess Pieces on their cells.
-        void CreateNewPieces(BlackWhite PlayerColor)
+        void CreateNewPieces(MainColors PlayerColor)
         {
-            BlackWhite holder;
+            MainColors holder;
             
             // Depending on player's color, method places the king and the queen on different tiles
             // and also sets a different colors to all pieces.
-            if(PlayerColor == BlackWhite.White)
+            if(PlayerColor == MainColors.White)
             {
-                holder = BlackWhite.White;
+                holder = MainColors.White;
                 for (int i = 0; i < 8; i+=7)
                 {
                     board[i, 0].ChessPiece = new Rook(holder);
@@ -49,7 +49,7 @@ namespace ChessWPF.MVVM.Model
                     board[i, 5].ChessPiece = new Bishop(holder);
                     board[i, 6].ChessPiece = new Knight(holder);
                     board[i, 7].ChessPiece = new Rook(holder);
-                    holder = BlackWhite.Black;
+                    holder = MainColors.Black;
                 }
                 for(int i = 6; i > 0; i-=5)
                 {
@@ -57,12 +57,12 @@ namespace ChessWPF.MVVM.Model
                     {
                         board[i, j].ChessPiece = new Pawn(holder);
                     }
-                    holder = BlackWhite.White;
+                    holder = MainColors.White;
                 }
             }
             else
             {
-                holder = BlackWhite.Black;
+                holder = MainColors.Black;
                 for (int i = 0; i < 8; i += 7)
                 {
                     board[i, 0].ChessPiece = new Rook(holder);
@@ -73,7 +73,7 @@ namespace ChessWPF.MVVM.Model
                     board[i, 5].ChessPiece = new Bishop(holder);
                     board[i, 6].ChessPiece = new Knight(holder);
                     board[i, 7].ChessPiece = new Rook(holder);
-                    holder = BlackWhite.White;
+                    holder = MainColors.White;
                 }
                 for (int i = 6; i > 0; i -= 5)
                 {
@@ -81,7 +81,7 @@ namespace ChessWPF.MVVM.Model
                     {
                         board[i, j].ChessPiece = new Pawn(holder);
                     }
-                    holder = BlackWhite.Black;
+                    holder = MainColors.Black;
                 }
             }
         }

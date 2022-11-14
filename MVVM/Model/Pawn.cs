@@ -9,7 +9,7 @@ namespace ChessWPF.MVVM.Model
     internal class Pawn : ChessPiece
     {
         public override int Power => 1;
-        public Pawn(BlackWhite pieceColor) : base(pieceColor)
+        public Pawn(MainColors pieceColor) : base(pieceColor)
         {
 
         }

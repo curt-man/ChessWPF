@@ -9,7 +9,7 @@ namespace ChessWPF.MVVM.Model
     internal class Bishop : ChessPiece
     {
         public override int Power => 3;
-        public Bishop(BlackWhite pieceColor) : base(pieceColor)
+        public Bishop(MainColors pieceColor) : base(pieceColor)
         {
 
         }
