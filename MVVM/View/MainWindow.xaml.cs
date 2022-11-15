@@ -21,13 +21,10 @@ namespace ChessWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        Random random = new Random();
-        Board firstBoard;
         
         public MainWindow()
         {
             InitializeComponent();
-            firstBoard = new Board(MainColors.White);
         }
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {

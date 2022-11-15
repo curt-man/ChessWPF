@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace ChessWPF.MVVM.Model
 {
     internal abstract class ChessPiece
     {
-        public MainColors PieceColor { get; protected set; }
+        public SolidColorBrush PieceColor { get; set; }
+        public virtual string PieceIcon { get; set; }
         public virtual int Power { get; }
 
-        public ChessPiece(MainColors pieceColor)
+        public ChessPiece(SolidColorBrush pieceColor)
         {
             PieceColor = pieceColor;
         }

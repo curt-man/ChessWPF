@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChessWPF.MVVM.Model
 {
-    internal enum MainColors
+    internal enum PlayerColor
     {
         White = 0,
-        Black = 1,
-        Pink = 2,
-        
+        Black = 1
     }
 }

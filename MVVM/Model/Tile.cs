@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace ChessWPF.MVVM.Model
 {
     internal class Tile
     {
-        public MainColors TileColor { get; private set; }
-        
+        public SolidColorBrush Color { get; private set; }
         public ChessPiece? ChessPiece { get; set; } = null;
-        public Tile(MainColors tileColor, ChessPiece? chessPiece)
+        public Tile(SolidColorBrush tileColor, ChessPiece? chessPiece)
         {
             ChessPiece = chessPiece;
-            TileColor = tileColor;
+            Color = tileColor;
         }
 
         public void IsPossibleToMove(bool option)
         {
-            if (option)
-                TileColor = MainColors.Pink;
+            
         }
         public bool isOccupied()
         {

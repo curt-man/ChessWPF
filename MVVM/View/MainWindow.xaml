@@ -29,12 +29,7 @@
             <RowDefinition Height="60*"/>
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
-        <!--<Label FontFamily="Font Awesome 6 Free Solid"
-               Content="&#xf43a;"
-               Grid.Column="1"
-               Grid.Row="2"
-               FontSize="100"
-               Foreground="#FFFFFF"/>-->
+        
         <Border x:Name="HeaderPanel"
                 Grid.ColumnSpan="2"
                 Grid.Row="0"
@@ -115,6 +110,7 @@
                Content="4:21"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
+               FontWeight="Bold"
                Grid.Column="0"
                Grid.Row="1"
                Foreground="#FFFFFF"
@@ -122,38 +118,28 @@
         <Border x:Name="FirstBoard"
                 Grid.Column="0"
                 Grid.Row="2"
-                Background="#FFFFFF"
+                Padding="5"
+                Background="#292929"
                 BorderThickness="30"
-                BorderBrush="#292929">
-            <!--<Grid x:Name="FirstBoardGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Rectangle Fill="Black"/>
-            </Grid>-->
-            <ListView x:Name="FirstBoardTiles"
+                BorderBrush="#292929"
+                CornerRadius="30"
+                Margin="24">
+            <ListBox x:Name="FirstBoardTiles"
                      Background="Transparent"
                      BorderThickness="0"
-                     ItemsSource="{Binding firstBoard}"
-                     ItemContainerStyle="{StaticResource TileCanvas}"/>
+                     BorderBrush="#292929"
+                     Padding="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding board}"
+                     ItemContainerStyle="{StaticResource TileCanvas}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
         </Border>
-
+        
     </Grid>
 </Window>
