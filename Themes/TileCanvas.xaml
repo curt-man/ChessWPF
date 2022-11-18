@@ -5,7 +5,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border Background="{Binding Color}"
+                    <Border Background="{Binding TileColor}"
                             Height="60"
                             Width="60"
                             HorizontalAlignment="Center"

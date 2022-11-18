@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,16 +12,38 @@ namespace ChessWPF.MVVM.ViewModel
 {
     internal class MainViewModel
     {
-
+        // It was a stupid idea to make tile contain a chess piece in itself, I'm gonna separate them soon.
         public ObservableCollection<Tile> board { get; set; }
+        public SolidColorBrush white;
+        public SolidColorBrush black;
         public MainViewModel()
         {
             board = new ObservableCollection<Tile>();
-            SolidColorBrush white = new SolidColorBrush(Colors.White);
-            SolidColorBrush black = new SolidColorBrush(Colors.Black);
+            white = new SolidColorBrush(Colors.White);
+            black = new SolidColorBrush(Colors.Black);
+            //board.CollectionChanged += Board_CollectionChanged;
             CreateNewBoard();
-            CreateChessPieces(PlayerColor.White,white,black);
+            CreateChessPieces(PlayerColor.Black, white, black);
         }
+        //private void Board_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    switch (e.Action)
+        //    {
+        //        case NotifyCollectionChangedAction.Add: // если добавление
+        //            if (e.NewItems?[0] is Tile newTile)
+        //                Console.WriteLine($"Добавлен новый объект: {newTile.TileColor}");
+        //            break;
+        //        case NotifyCollectionChangedAction.Remove: // если удаление
+        //            if (e.OldItems?[0] is Tile oldTile)
+        //                Console.WriteLine($"Удален объект: {oldTile.TileColor}");
+        //            break;
+        //        case NotifyCollectionChangedAction.Replace: // если замена
+        //            if ((e.NewItems?[0] is Tile replacingTile) &&
+        //                (e.OldItems?[0] is Tile replacedTile))
+        //                Console.WriteLine($"Объект {replacedTile.TileColor} заменен объектом {replacingTile.TileColor}");
+        //            break;
+        //    }
+        //}
         void CreateNewBoard()
         {
             for(int i = 0; i<8; i++)
@@ -28,12 +51,13 @@ namespace ChessWPF.MVVM.ViewModel
                 for(int j = 0; j < 8; j++)
                 {
                     if (((i + j) % 2) == 0)
-                        board.Add(new Tile(new SolidColorBrush(Colors.Gray), null));
+                        board.Add(new Tile(((SolidColorBrush)new BrushConverter().ConvertFrom("#696969")), null));
                     else
-                        board.Add(new Tile(new SolidColorBrush(Colors.DarkGray), null));
+                        board.Add(new Tile(((SolidColorBrush)new BrushConverter().ConvertFrom("#494949")), null));
                 }
             }
         }
+
         void CreateChessPieces(PlayerColor playerColor, SolidColorBrush white, SolidColorBrush black)
         {
 

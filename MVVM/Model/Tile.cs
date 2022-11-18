@@ -9,12 +9,12 @@ namespace ChessWPF.MVVM.Model
 {
     internal class Tile
     {
-        public SolidColorBrush Color { get; private set; }
+        public SolidColorBrush TileColor { get; private set; }
         public ChessPiece? ChessPiece { get; set; } = null;
         public Tile(SolidColorBrush tileColor, ChessPiece? chessPiece)
         {
             ChessPiece = chessPiece;
-            Color = tileColor;
+            TileColor = tileColor;
         }
 
         public void IsPossibleToMove(bool option)
