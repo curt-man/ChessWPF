@@ -1,4 +1,5 @@
 ﻿using ChessWPF.MVVM.Model;
+using ChessWPF.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,6 @@ namespace ChessWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        
         public MainWindow()
         {
             InitializeComponent();
@@ -49,6 +49,12 @@ namespace ChessWPF
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
+        }
+
+
+        private void FirstBoardTiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FirstBoardTimer.Content = ((ListBox)sender).SelectedIndex;
         }
     }
 }

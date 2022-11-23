@@ -5,12 +5,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <Border Background="{Binding TileColor}"
+                    <Border Background="{Binding TileColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Height="60"
                             Width="60"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            
                             >
                         <Path Data="{Binding ChessPiece.PieceIcon}"
                               Fill="{Binding ChessPiece.PieceColor}"

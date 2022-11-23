@@ -15,7 +15,7 @@ namespace ChessWPF.MVVM.Model
     internal class Rook : ChessPiece
     {
         public override int Power => 5;
-        public Rook(SolidColorBrush pieceColor) : base(pieceColor)
+        public Rook(SolidColorBrush pieceColor, PlayerColor playerColor) : base(pieceColor, playerColor)
         {
 
         }

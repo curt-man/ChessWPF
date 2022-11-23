@@ -9,16 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MVVM\Icons\**" />
+    <EmbeddedResource Remove="MVVM\Icons\**" />
+    <None Remove="MVVM\Icons\**" />
+    <Page Remove="MVVM\Icons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\chess-board.ico" />
     <None Remove="Resources\Font Awesome 6 Free Solid.otf" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Resources\chess-board.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MVVM\Icons\" />
   </ItemGroup>
 
   <ItemGroup>

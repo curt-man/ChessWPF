@@ -144,8 +144,10 @@
                      Padding="0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                     ItemsSource="{Binding board}"
-                     ItemContainerStyle="{StaticResource TileCanvas}">
+                     ItemsSource="{Binding Board, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ItemContainerStyle="{StaticResource TileCanvas}"
+                     SelectionChanged="FirstBoardTiles_SelectionChanged">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"/>
