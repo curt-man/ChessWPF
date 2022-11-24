@@ -21,6 +21,9 @@ namespace ChessWPF.MVVM.Model
             PlayerColor = playerColor;
         }
 
-        public abstract int[,] Move(int column, int row);
+        public virtual int[] CalculatePossibleMoves(int position)
+        {
+            return new int[1];
+        }
     }
 }

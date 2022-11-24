@@ -15,7 +15,10 @@ namespace ChessWPF.MVVM.Model
         private SolidColorBrush tileColor;
         public SolidColorBrush TileColor
         {
-            get { return tileColor; }
+            get
+            {
+                return tileColor;
+            }
             set
             {
                 tileColor = value;
@@ -45,6 +48,7 @@ namespace ChessWPF.MVVM.Model
         {
             
         }
+
         public bool isOccupied()
         {
             return ChessPiece != null;
