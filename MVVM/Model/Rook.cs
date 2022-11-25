@@ -30,11 +30,11 @@ namespace ChessWPF.MVVM.Model
             int moveNumber = 0;
             for(int i = 0; i<8; i++)
             {
-                possibleMoves[moveNumber++] = row * 8 + column;
-                possibleMoves[moveNumber++] = column * 8 - *(8-row);
+                possibleMoves[moveNumber++] = row * 8 + i;
+                possibleMoves[moveNumber++] = column + i * 8;
             }
-
-            return new int[1];
+            
+            return possibleMoves;
         }
     }
 }

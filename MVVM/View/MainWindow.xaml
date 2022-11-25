@@ -12,9 +12,9 @@
         Background="#393939"
         WindowStyle="None"
         AllowsTransparency="True"
-        ResizeMode="CanResizeWithGrip"
         FontFamily="Montserrat"
         FontSize="12"
+        ResizeMode="CanResizeWithGrip"
         Foreground="#FFFFFF">
 
 
@@ -159,6 +159,41 @@
                 </ListBox.ItemsPanel>
             </ListBox>
         </Border>
-        
+
+        <Border x:Name="SecondBoard"
+                Grid.Column="1"
+                Grid.Row="2"
+                Padding="5"
+                Background="#292929"
+                BorderThickness="30"
+                BorderBrush="#292929"
+                CornerRadius="30"
+                Margin="24"
+                >
+            <ListBox x:Name="SecondBoardTiles"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     BorderBrush="#292929"
+                     Padding="0"
+                     RenderTransformOrigin="0.5,0.5"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     ItemsSource="{Binding Board, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     ItemContainerStyle="{StaticResource TileCanvasRotated}"
+                     SelectionChanged="FirstBoardTiles_SelectionChanged">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </ListBox.RenderTransform>
+            </ListBox>
+        </Border>
+
+
+
     </Grid>
 </Window>

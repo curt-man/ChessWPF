@@ -33,4 +33,10 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Themes\TileCanvasRotated.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

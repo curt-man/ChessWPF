@@ -11,6 +11,7 @@ namespace ChessWPF.MVVM.Model
     internal class Pawn : ChessPiece
     {
         public override int Power => 1;
+        
         public Pawn(SolidColorBrush pieceColor, PlayerColor playerColor) : base(pieceColor, playerColor)
         {
 
@@ -19,7 +20,13 @@ namespace ChessWPF.MVVM.Model
 
         public override int[] CalculatePossibleMoves(int position)
         {
-            return new int[1];
+            int row = position / 8;
+            int column = position % 8;
+            int[] possibleMoves = new int[4];
+            //possibleMoves[0] = row 
+            
+
+            return possibleMoves;
         }
     }
 }

@@ -15,13 +15,11 @@ namespace ChessWPF.MVVM.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        // It was a stupid idea to make tile contain a chess piece in itself, I'm gonna separate them soon.
         public ObservableCollection<Tile> Board { get; set; }
 
         PlayerColor playerTurn = PlayerColor.White;
 
-        private int selectedTile = -1;
-        private SolidColorBrush temp;
+        int selectedTile = -1;
         
         public int SelectedTile
         {
@@ -36,7 +34,7 @@ namespace ChessWPF.MVVM.ViewModel
 
                     if (Board[value].isOccupied())
                     {
-                        if (Board[value].ChessPiece.PlayerColor == playerTurn)
+                        if (Board[value].ChessPiece.isSameColor(playerTurn))
                         {
                             deselectTile();
                             MessageBox.Show("It's your piece!");
@@ -56,8 +54,12 @@ namespace ChessWPF.MVVM.ViewModel
                 }
                 else if(Board[value].isOccupied())
                 {
-                    if (Board[value].ChessPiece.PlayerColor == playerTurn)
+                    if (Board[value].ChessPiece.isSameColor(playerTurn))
+                    {
                         selectTile(value);
+                        showPossibleMoves();
+                    }
+                        
                     else
                         MessageBox.Show("It's not your turn!");
                 }
@@ -67,39 +69,68 @@ namespace ChessWPF.MVVM.ViewModel
 
             }
         }
-
-        private void nextTurn()
+        void nextTurn()
         {
             if (playerTurn == PlayerColor.White)
                 playerTurn = PlayerColor.Black;
             else
                 playerTurn = PlayerColor.White;
         }
-        private void makeMove(int value)
+        void makeMove(int value)
         {
             Board[value].ChessPiece = Board[selectedTile].ChessPiece;
             Board[selectedTile].ChessPiece = null;
             deselectTile();
         }
-        private void deselectTile()
+        void deselectTile()
         {
-            Board[selectedTile].TileColor = temp;
+            returnTileColors();
             selectedTile = -1;
         }
-        private void selectTile(int value)
+        void selectTile(int value)
         {
-            temp = Board[value].TileColor;
             selectedTile = value;
             Board[selectedTile].TileColor = selectedTileColor;
         }
+        void showPossibleMoves()
+        {
+            int[] possibleMoves = Board[selectedTile].ChessPiece.CalculatePossibleMoves(selectedTile);
+            foreach(int move in possibleMoves)
+            {
+                Board[move].TileColor = possibleToMoveTileColor;
+            }
+        }
+        void returnTileColors()
+        {
 
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (((i + j) % 2) == 0)
+                        Board[i * 8 + j].TileColor = whiteTile;
+                    else
+                        Board[i * 8 + j].TileColor = blackTile;
+                }
+            }
+        }
 
+        // Colors of tiles
         private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#696969");
         private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#494949");
-        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFAFD8");
+        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#580D3A");
+        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#0D5835");
 
+
+        // Colors of pieces
         private SolidColorBrush whitePiece = new SolidColorBrush(Colors.White);
         private SolidColorBrush blackPiece = new SolidColorBrush(Colors.Black);
+
+
+        // Which color is player
+        public PlayerColor firstBoardPlayerColor = PlayerColor.Black;
+        public PlayerColor secondBoardPlayerColor = PlayerColor.White;
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -107,13 +138,16 @@ namespace ChessWPF.MVVM.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+
+
+
         public MainViewModel()
         {
             Board = new ObservableCollection<Tile>();
             
             //Board.CollectionChanged += Board_CollectionChanged;
             CreateNewBoard();
-            CreateChessPieces(PlayerColor.Black, whitePiece, blackPiece);
+            CreateChessPieces(firstBoardPlayerColor, whitePiece, blackPiece);
         }
         void CreateNewBoard()
         {

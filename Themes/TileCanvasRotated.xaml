@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="ListBoxItem"
-           x:Key="TileCanvas">
+           x:Key="TileCanvasRotated">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
@@ -11,6 +11,7 @@
                             Width="60"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            RenderTransformOrigin="0.5,0.5"
                             >
                         <Path Data="{Binding ChessPiece.PieceIcon}"
                               Fill="{Binding ChessPiece.PieceColor}"
@@ -18,6 +19,9 @@
                               Stretch="Uniform"
                               Margin="10"
                               />
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="180"/>
+                        </Border.RenderTransform>
                     </Border>
 
                 </ControlTemplate>

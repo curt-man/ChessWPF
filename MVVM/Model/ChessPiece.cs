@@ -21,6 +21,11 @@ namespace ChessWPF.MVVM.Model
             PlayerColor = playerColor;
         }
 
+        public bool isSameColor(PlayerColor playerTurn)
+        {
+            return PlayerColor == playerTurn;
+        }
+
         public virtual int[] CalculatePossibleMoves(int position)
         {
             return new int[1];
