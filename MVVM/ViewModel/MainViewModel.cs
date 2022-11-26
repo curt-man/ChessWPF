@@ -17,7 +17,17 @@ namespace ChessWPF.MVVM.ViewModel
     {
         public ObservableCollection<Tile> Board { get; set; }
 
-        PlayerColor playerTurn = PlayerColor.White;
+        private PlayerColor playerTurn = PlayerColor.White;
+
+        public PlayerColor PlayerTurn
+        {
+            get { return playerTurn; }
+            set
+            {
+                playerTurn = value;
+                OnPropertyChanged("PlayerTurn");
+            }
+        }
 
         int selectedTile = -1;
         
@@ -71,10 +81,10 @@ namespace ChessWPF.MVVM.ViewModel
         }
         void nextTurn()
         {
-            if (playerTurn == PlayerColor.White)
-                playerTurn = PlayerColor.Black;
+            if (PlayerTurn == PlayerColor.White)
+                PlayerTurn = PlayerColor.Black;
             else
-                playerTurn = PlayerColor.White;
+                PlayerTurn = PlayerColor.White;
         }
         void makeMove(int value)
         {

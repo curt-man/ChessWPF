@@ -23,8 +23,27 @@ namespace ChessWPF.MVVM.Model
             int row = position / 8;
             int column = position % 8;
             int[] possibleMoves = new int[4];
-            //possibleMoves[0] = row 
-            
+            if(PlayerColor == PlayerColor.White)
+            {
+                possibleMoves[0] = position -= 8;
+                possibleMoves[1] = position -= 7;
+                possibleMoves[2] = position -= 6;
+                if(isMoved)
+                    possibleMoves[3] = position;
+                else
+                    possibleMoves[3] = position -= 16;
+            }
+            if (PlayerColor == PlayerColor.Black)
+            {
+                possibleMoves[0] = position += 8;
+                possibleMoves[1] = position += 7;
+                possibleMoves[2] = position += 6;
+                if (isMoved)
+                    possibleMoves[3] = position;
+                else
+                    possibleMoves[3] = position += 16;
+            }
+
 
             return possibleMoves;
         }

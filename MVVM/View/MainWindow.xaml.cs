@@ -20,11 +20,16 @@ namespace ChessWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
+    
+
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            
         }
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
@@ -55,6 +60,14 @@ namespace ChessWPF
         private void FirstBoardTiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FirstBoardTimer.Content = ((ListBox)sender).SelectedIndex;
+            if (SecondBoardTimer.Content.ToString() == "Black")
+            {
+                SecondBoard.Visibility = Visibility.Visible;
+            }
+            else
+                SecondBoard.Visibility = Visibility.Hidden;
         }
+        
+
     }
 }
