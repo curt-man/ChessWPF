@@ -138,12 +138,14 @@
 
 
             <Label x:Name="SecondBoardTimer"
-                    Content="{Binding PlayerTurn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontWeight="Bold"
-                    Foreground="#FFFFFF"
-                    FontSize="32"/>
+                   Content="{Binding PlayerTurn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                   HorizontalAlignment="Center"
+                   SizeChanged="SecondBoardTimer_SizeChanged"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Foreground="#FFFFFF"
+                   FontSize="32"
+                    />
         </StackPanel>
         
         <Border x:Name="FirstBoard"

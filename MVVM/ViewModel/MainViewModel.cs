@@ -155,9 +155,8 @@ namespace ChessWPF.MVVM.ViewModel
         {
             Board = new ObservableCollection<Tile>();
             
-            //Board.CollectionChanged += Board_CollectionChanged;
             CreateNewBoard();
-            CreateChessPieces(firstBoardPlayerColor, whitePiece, blackPiece);
+            CreateChessPieces(whitePiece, blackPiece);
         }
         void CreateNewBoard()
         {
@@ -173,81 +172,42 @@ namespace ChessWPF.MVVM.ViewModel
             }
         }
 
-        void CreateChessPieces(PlayerColor playerColor, SolidColorBrush whitePiece, SolidColorBrush blackPiece)
+        void CreateChessPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
 
-            if (playerColor == PlayerColor.White)
-            {
-                Board[0].ChessPiece = new Rook(whitePiece, PlayerColor.White);
-                Board[1].ChessPiece = new Knight(whitePiece, PlayerColor.White);
-                Board[2].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
-                Board[3].ChessPiece = new Queen(whitePiece, PlayerColor.White);
-                Board[4].ChessPiece = new King(whitePiece, PlayerColor.White);
-                Board[5].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
-                Board[6].ChessPiece = new Knight(whitePiece, PlayerColor.White);
-                Board[7].ChessPiece = new Rook(whitePiece, PlayerColor.White);
-                Board[8].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[9].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[10].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[11].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[12].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[13].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[14].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[15].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[0].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
+            Board[1].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
+            Board[2].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
+            Board[3].ChessPiece = new King(blackPiece, PlayerColor.Black);
+            Board[4].ChessPiece = new Queen(blackPiece, PlayerColor.Black);
+            Board[5].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
+            Board[6].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
+            Board[7].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
+            Board[8].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[9].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[10].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[11].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[12].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[13].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[14].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[15].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
 
-                Board[48].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[49].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[50].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[51].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[52].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[53].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[54].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[55].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[56].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
-                Board[57].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
-                Board[58].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
-                Board[59].ChessPiece = new Queen(blackPiece, PlayerColor.Black);
-                Board[60].ChessPiece = new King(blackPiece, PlayerColor.Black);
-                Board[61].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
-                Board[62].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
-                Board[63].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
-            }
-            else
-            {
-                Board[0].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
-                Board[1].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
-                Board[2].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
-                Board[3].ChessPiece = new King(blackPiece, PlayerColor.Black);
-                Board[4].ChessPiece = new Queen(blackPiece, PlayerColor.Black);
-                Board[5].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
-                Board[6].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
-                Board[7].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
-                Board[8].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[9].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[10].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[11].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[12].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[13].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[14].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-                Board[15].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
-
-                Board[48].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[49].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[50].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[51].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[52].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[53].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[54].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[55].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
-                Board[56].ChessPiece = new Rook(whitePiece, PlayerColor.White);
-                Board[57].ChessPiece = new Knight(whitePiece, PlayerColor.White);
-                Board[58].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
-                Board[59].ChessPiece = new King(whitePiece, PlayerColor.White);
-                Board[60].ChessPiece = new Queen(whitePiece, PlayerColor.White);
-                Board[61].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
-                Board[62].ChessPiece = new Knight(whitePiece, PlayerColor.White);
-                Board[63].ChessPiece = new Rook(whitePiece, PlayerColor.White);
-            }
+            Board[48].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[49].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[50].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[51].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[52].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[53].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[54].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[55].ChessPiece = new Pawn(whitePiece, PlayerColor.White);
+            Board[56].ChessPiece = new Rook(whitePiece, PlayerColor.White);
+            Board[57].ChessPiece = new Knight(whitePiece, PlayerColor.White);
+            Board[58].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
+            Board[59].ChessPiece = new King(whitePiece, PlayerColor.White);
+            Board[60].ChessPiece = new Queen(whitePiece, PlayerColor.White);
+            Board[61].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
+            Board[62].ChessPiece = new Knight(whitePiece, PlayerColor.White);
+            Board[63].ChessPiece = new Rook(whitePiece, PlayerColor.White);
 
 
         }

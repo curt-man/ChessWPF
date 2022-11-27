@@ -14,7 +14,7 @@ namespace ChessWPF.MVVM.Model
         public PlayerColor PlayerColor { get; set; }
         public virtual string PieceIcon { get; set; }
         public virtual int Power { get; }
-        public bool isMoved { get; set; }
+        public bool hasMoved { get; set; } = false;
 
         public ChessPiece(SolidColorBrush pieceColor, PlayerColor playerColor)
         {
