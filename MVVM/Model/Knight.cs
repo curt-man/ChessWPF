@@ -19,7 +19,57 @@ namespace ChessWPF.MVVM.Model
 
         public override int[] CalculatePossibleMoves(int position)
         {
-            return new int[1];
+            int row = position / 8;
+            int column = position % 8;
+            List<int> possibleMoves = new List<int>();
+            int move;
+
+
+
+            for (int i = -2; i < 5; i += 4)
+            {
+                move = (row+i)*8 + column +1;
+                if (move <= 63 && move >= 0)
+                {
+                    if (column < 4 && move % 8 < 6)
+                        possibleMoves.Add(move);
+                    else if (column >= 4 && move % 8 > 1)
+                        possibleMoves.Add(move);
+                }
+
+                move = (row + i) * 8 + column + -1;
+                if (move <= 63 && move >= 0)
+                {
+                    if (column < 4 && move % 8 < 6)
+                        possibleMoves.Add(move);
+                    else if (column >= 4 && move % 8 > 1)
+                        possibleMoves.Add(move);
+                }
+            }
+
+            for (int i = -2; i < 5; i += 4)
+            {
+                move = (row + 1) * 8 + column + i;
+                if (move <= 63 && move >= 0)
+                {
+                    if (column < 4 && move % 8 < 6)
+                        possibleMoves.Add(move);
+                    else if (column >= 4 && move % 8 > 1)
+                        possibleMoves.Add(move);
+                }
+
+                move = (row - 1) * 8 + column + i;
+                if (move <= 63 && move >= 0)
+                {
+                    if (column < 4 && move % 8 < 6)
+                        possibleMoves.Add(move);
+                    else if (column >= 4 && move % 8 > 1)
+                        possibleMoves.Add(move);
+                }
+            }
+
+
+            return possibleMoves.ToArray();
         }
     }
 }

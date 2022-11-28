@@ -21,15 +21,47 @@ namespace ChessWPF.MVVM.Model
         {
             int row = position / 8;
             int column = position % 8;
-            int[] possibleMoves = new int[15];
-            int moveNumber = 0;
+            List<int> possibleMoves = new List<int>();
+            int move;
+
+
+
+            for(int i = 0; i<8; i++)
+            {
+                move = (row - i) * 8 + (column - i);
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                possibleMoves.Add(move);
+            }
             for (int i = 0; i < 8; i++)
             {
-                possibleMoves[moveNumber++] = row * 8 + i;
-                possibleMoves[moveNumber++] = column + i * 8;
+                move = (row + i) * 8 + (column + i);
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                possibleMoves.Add(move);
+
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                move = (row - i) * 8 + (column + i);
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                possibleMoves.Add(move);
+
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                move = (row + i) * 8 + (column - i);
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                possibleMoves.Add(move);
+
             }
 
-            return possibleMoves;
+            possibleMoves.RemoveAll(x => x == position);
+
+
+            return possibleMoves.ToArray();
         }
     }
 }

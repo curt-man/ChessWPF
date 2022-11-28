@@ -89,6 +89,7 @@ namespace ChessWPF.MVVM.ViewModel
         void makeMove(int value)
         {
             Board[value].ChessPiece = Board[selectedTile].ChessPiece;
+            Board[selectedTile].ChessPiece.hasMoved = true;
             Board[selectedTile].ChessPiece = null;
             deselectTile();
         }
@@ -107,7 +108,8 @@ namespace ChessWPF.MVVM.ViewModel
             int[] possibleMoves = Board[selectedTile].ChessPiece.CalculatePossibleMoves(selectedTile);
             foreach(int move in possibleMoves)
             {
-                Board[move].TileColor = possibleToMoveTileColor;
+                //if(!Board[move].isOccupied())
+                    Board[move].TileColor = possibleToMoveTileColor;
             }
         }
         void returnTileColors()
@@ -128,8 +130,8 @@ namespace ChessWPF.MVVM.ViewModel
         // Colors of tiles
         private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#696969");
         private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#494949");
-        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#580D3A");
-        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#0D5835");
+        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#A67C00");
+        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#00A43C");
 
 
         // Colors of pieces

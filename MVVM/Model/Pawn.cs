@@ -26,29 +26,30 @@ namespace ChessWPF.MVVM.Model
         {
             int row = position / 8;
             int column = position % 8;
-            int[] possibleMoves = new int[4];
+            List<int> possibleMoves = new List<int>();
+
             if(PlayerColor == PlayerColor.White)
             {
-                possibleMoves[0] = (row - 1) * 8 + column - 1;
-                possibleMoves[1] = (row - 1) * 8 + column;
-                possibleMoves[2] = (row - 1) * 8 + column + 1;
-                possibleMoves[3] = (row - 2) * 8 + column;
+                if (column != 0)
+                    possibleMoves.Add((row - 1) * 8 + column - 1);
+                possibleMoves.Add((row - 1) * 8 + column);
+                if (column != 7)
+                    possibleMoves.Add((row - 1) * 8 + column + 1);
+                if (!hasMoved)
+                    possibleMoves.Add((row - 2) * 8 + column);
             }
             if (PlayerColor == PlayerColor.Black)
             {
-                possibleMoves[0] = (row + 1) * 8 + column - 1;
-                possibleMoves[1] = (row + 1) * 8 + column;
-                possibleMoves[2] = (row + 1) * 8 + column + 1;
-                possibleMoves[3] = (row + 2) * 8 + column;
+                if (column != 0)
+                    possibleMoves.Add((row + 1) * 8 + column - 1);
+                possibleMoves.Add((row + 1) * 8 + column);
+                if (column != 7)
+                    possibleMoves.Add((row + 1) * 8 + column + 1);
+                if (!hasMoved)
+                    possibleMoves.Add((row + 2) * 8 + column);
             }
 
-            if (column == 0)
-                possibleMoves[0] = position;
-            else if (column == 7)
-                possibleMoves[2] = position;
-            if (hasMoved)
-                possibleMoves[3] = position;
-            return possibleMoves;
+            return possibleMoves.ToArray();
         }
     }
 }

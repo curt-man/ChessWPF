@@ -44,11 +44,6 @@ namespace ChessWPF.MVVM.Model
             TileColor = tileColor;
         }
 
-        public void IsPossibleToMove(bool option)
-        {
-            
-        }
-
         public bool isOccupied()
         {
             return ChessPiece != null;

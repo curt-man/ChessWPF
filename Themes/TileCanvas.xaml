@@ -11,6 +11,8 @@
                             Width="60"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            BorderThickness="0.1"
+                            BorderBrush="Black"
                             >
                         <Path Data="{Binding ChessPiece.PieceIcon}"
                               Fill="{Binding ChessPiece.PieceColor}"
