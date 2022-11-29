@@ -47,18 +47,32 @@ namespace ChessWPF.MVVM.ViewModel
                         if (Board[value].ChessPiece.isSameColor(playerTurn))
                         {
                             deselectTile();
-                            MessageBox.Show("It's your piece!");
+                            //MessageBox.Show("It's your piece!");
                         }
                         else
                         {
-                            makeMove(value);
-                            nextTurn();
+                            if(Board[value].TileColor == possibleToMoveTileColor)
+                            {
+                                makeMove(value);
+                                nextTurn();
+                            }
+                            else
+                            {
+                                deselectTile();
+                            }
                         }
                     }
                     else
                     {
-                        makeMove(value);
-                        nextTurn();
+                        if (Board[value].TileColor == possibleToMoveTileColor)
+                        {
+                            makeMove(value);
+                            nextTurn();
+                        }
+                        else
+                        {
+                            deselectTile();
+                        }
                     }
                     
                 }
@@ -70,8 +84,8 @@ namespace ChessWPF.MVVM.ViewModel
                         showPossibleMoves();
                     }
                         
-                    else
-                        MessageBox.Show("It's not your turn!");
+                    //else
+                    //    MessageBox.Show("It's not your turn!");
                 }
 
 
@@ -128,9 +142,30 @@ namespace ChessWPF.MVVM.ViewModel
             }
         }
 
-        // Colors of tiles
-        private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#C70039");
-        private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#900C3F");
+        #region "Colors"
+        private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#47C0DD");
+
+        public SolidColorBrush WhiteTile
+        {
+            get { return whiteTile; }
+            set
+            {
+                whiteTile = value;
+                OnPropertyChanged("WhiteTile");
+            }
+        }
+        private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#198DA9");
+
+        public SolidColorBrush BlackTile
+        {
+            get { return blackTile; }
+            set
+            {
+                blackTile = value;
+                OnPropertyChanged("WhiteTile");
+            }
+        }
+
         private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008080");
         private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008061");
 
@@ -138,7 +173,7 @@ namespace ChessWPF.MVVM.ViewModel
         // Colors of pieces
         private SolidColorBrush whitePiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFFFFF");
         private SolidColorBrush blackPiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#000000");
-
+        #endregion
 
         // Which color is player
         public PlayerColor firstBoardPlayerColor = PlayerColor.Black;
