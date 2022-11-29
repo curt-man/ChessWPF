@@ -109,7 +109,7 @@ namespace ChessWPF.MVVM.ViewModel
             foreach(int move in possibleMoves)
             {
                 
-                if (!Board[move].isOccupied())
+                //if (!Board[move].isOccupied())
                     Board[move].TileColor = possibleToMoveTileColor;
             }
         }
@@ -129,15 +129,15 @@ namespace ChessWPF.MVVM.ViewModel
         }
 
         // Colors of tiles
-        private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#696969");
-        private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#494949");
-        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#A67C00");
-        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#00A43C");
+        private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#C70039");
+        private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#900C3F");
+        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008080");
+        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008061");
 
 
         // Colors of pieces
-        private SolidColorBrush whitePiece = new SolidColorBrush(Colors.White);
-        private SolidColorBrush blackPiece = new SolidColorBrush(Colors.Black);
+        private SolidColorBrush whitePiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFFFFF");
+        private SolidColorBrush blackPiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#000000");
 
 
         // Which color is player

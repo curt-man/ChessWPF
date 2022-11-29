@@ -11,7 +11,7 @@
                             Width="60"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            BorderThickness="0.1"
+                            BorderThickness="0.05"
                             BorderBrush="Black"
                             >
                         <Path Data="{Binding ChessPiece.PieceIcon}"
@@ -20,6 +20,35 @@
                               Stretch="Uniform"
                               Margin="10"
                               />
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ListBoxItem"
+           x:Key="TileCanvasRotated">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{Binding TileColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Height="60"
+                            Width="60"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RenderTransformOrigin="0.5,0.5"
+                            BorderThickness="0.05"
+                            BorderBrush="Black"
+                            >
+                        <Path Data="{Binding ChessPiece.PieceIcon}"
+                              Fill="{Binding ChessPiece.PieceColor}"
+                              Height="36"
+                              Stretch="Uniform"
+                              Margin="10"
+                              />
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="180"/>
+                        </Border.RenderTransform>
                     </Border>
 
                 </ControlTemplate>

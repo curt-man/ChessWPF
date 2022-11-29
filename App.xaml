@@ -8,8 +8,11 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Themes/TileCanvas.xaml"/>
-                <ResourceDictionary Source="./Themes/TileCanvasRotated.xaml"/>
+                <ResourceDictionary Source="./Themes/HeaderButtons.xaml"/>
+                <ResourceDictionary Source="./Themes/StandartButton.xaml"/>
+                <ResourceDictionary Source="./Themes/BoardCoordinates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>
