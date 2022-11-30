@@ -1,29 +1,31 @@
-﻿<Window x:Class="ChessWPF.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessWPF"
-        xmlns:viewmodel="clr-namespace:ChessWPF.MVVM.ViewModel"
-        mc:Ignorable="d"
-        Title="MainWindow" 
-        Height="800" 
-        Width="800"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
-        FontFamily="Montserrat"
-        FontSize="12"
-        Foreground="#FFFFFF">
+﻿<Window
+    x:Class="ChessWPF.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ChessWPF"
+    xmlns:viewmodel="clr-namespace:ChessWPF.MVVM.ViewModel"
+    mc:Ignorable="d"
+    Title="MainWindow" 
+    Height="800" 
+    Width="800"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent"
+    FontFamily="Montserrat"
+    FontSize="12"
+    Foreground="#FFFFFF">
 
 
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
-    <Border Background="#283747"
-            CornerRadius="30"
-            BorderThickness="0"
-            BorderBrush="Transparent">
+    <Border
+        Background="#283747"
+        CornerRadius="30"
+        BorderThickness="0"
+        BorderBrush="Transparent">
         
         <Grid>
             <Grid.ColumnDefinitions>
@@ -32,9 +34,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="5*"/>
                 <RowDefinition Height="60*"/>
-                <RowDefinition Height="12*"/>
+                <RowDefinition Height="552*"/>
+                <RowDefinition Height="158*"/>
             </Grid.RowDefinitions>
         
             <Border x:Name="HeaderPanel"
@@ -52,253 +54,336 @@
                                 Grid.Column="0"
                                 Orientation="Horizontal">
                         <Button x:Name="Logo"
-                                Content="&#xf43c;"
-                                Style="{StaticResource HeaderButton}"/>
-                        <Label Foreground="#FFFFFF"
-                                Padding="0 3"
-                                FontWeight="DemiBold"
-                                Height="20"
-                                BorderBrush="Transparent"
-                                Background="Transparent"
-                                Content="ChessWPF"/>
+                                Style="{StaticResource HeaderButton}"
+                                >
+                            <Path
+                                Fill="#FFFFFF"
+                                Stretch="Uniform"
+                                Data="M64 0C28.7 0 0 28.7 0 64V384C0 419.3 28.7 448 64 448H384C419.3 448 448 419.3 448 384V64C448 28.7 419.3 0 384 0H64ZM128 64V128H192V64H256V128H320V64H384V128H320V192H384V256H320V320H384V384H320V320H256V384H192V320H128V384H64V320H128V256H64V192H128V128H64V64H128ZM192 192H256V128H192V192ZM192 256V192H128V256H192ZM256 256H192V320H256V256ZM256 256H320V192H256V256Z"/>
+                        </Button>
+                        <Label
+                            Foreground="#FFFFFF"
+                            Padding="0 3"
+                            FontWeight="DemiBold"
+                            Height="20"
+                            BorderBrush="Transparent"
+                            Background="Transparent"
+                            Content="ChessWPF"/>
                     </StackPanel>
-                    <StackPanel x:Name="HeaderButtons"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal"
-                                Grid.Column="2">
-                        <Button x:Name="MinimizeWindowButton"
-                                Content="&#xf2d1;"
-                                Click="MinimizeWindowButton_Click"
-                                Style="{StaticResource HeaderButton}"/>
-                        <Button x:Name="MaximizeWindowButton"
-                                Content="&#xf2d0;"
-                                Click="MaximizeWindowButton_Click"
-                                Style="{StaticResource HeaderButton}"/>
-                        <Button x:Name="CloseWindowButton"
-                                Click="CloseWindowButton_Click"
-                                Style="{StaticResource HeaderButton}">
-                                <Path
-                                    
-                                    Stretch="Uniform"
-                                    Data="M64 0C28.7 0 0 28.7 0 64V384C0 419.3 28.7 448 64 448H384C419.3 448 448 419.3 448 384V64C448 28.7 419.3 0 384 0H64ZM143 143C152.4 133.6 167.6 133.6 176.9 143L223.9 190L270.9 143C280.3 133.6 295.5 133.6 304.8 143C314.1 152.4 314.2 167.6 304.8 176.9L257.8 223.9L304.8 270.9C314.2 280.3 314.2 295.5 304.8 304.8C295.4 314.1 280.2 314.2 270.9 304.8L223.9 257.8L176.9 304.8C167.5 314.2 152.3 314.2 143 304.8C133.7 295.4 133.6 280.2 143 270.9L190 223.9L143 176.9C133.6 167.5 133.6 152.3 143 143V143Z"/>
+                    <StackPanel
+                        x:Name="HeaderButtons"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Grid.Column="2">
+                        <Button
+                            x:Name="MinimizeWindowButton"
+                            Click="MinimizeWindowButton_Click"
+                            Style="{StaticResource HeaderButton}"
+                                >
+                            <Path
+                                Fill="#FFFFFF"
+                                Stretch="Uniform" 
+                                Data="M50 10H398C420.091 10 438 27.9086 438 50V55C438 77.0914 420.091 95 398 95H50C27.9086 95 10 77.0914 10 55V50C10 27.9086 27.9086 10 50 10Z"/>
+                        </Button>
+                        <Button 
+                            x:Name="MaximizeWindowButton"
+                            Click="MaximizeWindowButton_Click"
+                            Style="{StaticResource HeaderButton}">
+                            <Path
+                                Fill="#FFFFFF"
+                                Stretch="Uniform"
+                                Data="M10 64C10 32.9268 31.8479 10 56 10H392C416.152 10 438 32.9268 438 64V384C438 415.073 416.152 438 392 438H56C31.8479 438 10 415.073 10 384V64ZM364 54H84C61.7771 54 46 74.0732 46 96C46 117.927 61.7771 138 84 138H364C386.223 138 402 117.927 402 96C402 74.0732 386.223 54 364 54Z"/>
+                        </Button>
+                        <Button
+                            x:Name="CloseWindowButton"
+                            Click="CloseWindowButton_Click"
+                            Style="{StaticResource HeaderButton}">
+                            <Path
+                                Fill="#FFFFFF"
+                                Stretch="Uniform"
+                                Data="M64 0C28.7 0 0 28.7 0 64V384C0 419.3 28.7 448 64 448H384C419.3 448 448 419.3 448 384V64C448 28.7 419.3 0 384 0H64ZM143 143C152.4 133.6 167.6 133.6 176.9 143L223.9 190L270.9 143C280.3 133.6 295.5 133.6 304.8 143C314.1 152.4 314.2 167.6 304.8 176.9L257.8 223.9L304.8 270.9C314.2 280.3 314.2 295.5 304.8 304.8C295.4 314.1 280.2 314.2 270.9 304.8L223.9 257.8L176.9 304.8C167.5 314.2 152.3 314.2 143 304.8C133.7 295.4 133.6 280.2 143 270.9L190 223.9L143 176.9C133.6 167.5 133.6 152.3 143 143V143Z"/>
 
                         </Button>
                     </StackPanel>
                 </Grid>
             </Border>
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Grid.Column="0"
-                        Grid.Row="1">
-            
-                <Label x:Name="FirstBoardTimer"
-                        Content="4:21"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        Foreground="#000000"
-                        FontSize="16"/>
+            <Grid
+                Grid.Column="0"
+                Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Label
+                    x:Name="FirstBoardTimer"
+                    Content="4:21"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Foreground="#FFFFFF"
+                    FontSize="16"
+                    Grid.Column="0"/>
 
-                <Grid Margin="10 0 10 0"
+                <Grid 
+                    Margin="0"
+                    Height="30"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Column="1">
+                    <Path
+                        x:Name="TimerIcon"
                         Height="30"
-                        >
-                
-                    <Path x:Name="TimerIcon"
-                            Height="30"
-                            Fill="#000000"
-                            Stretch="Uniform"
-                            Data="M430.572 51.97H349.446V37.998C349.472 36.0783 349.971 34.1945 350.899 32.5139C351.827 30.8334 353.156 29.4079 354.767 28.364C356.888 26.9437 358.624 25.0209 359.822 22.7668C361.019 20.5127 361.64 17.9974 361.63 15.445C361.6 6.83499 354.307 0 345.696 0H327.607C318.996 0 311.707 6.83499 311.674 15.445C311.663 17.9973 312.285 20.5126 313.482 22.7667C314.679 25.0208 316.415 26.9437 318.536 28.364C320.147 29.4078 321.476 30.8333 322.405 32.5139C323.333 34.1944 323.832 36.0782 323.858 37.998V51.97H132.9V37.998C132.925 36.0781 133.425 34.1943 134.353 32.5137C135.281 30.833 136.61 29.4076 138.222 28.364C140.343 26.9437 142.079 25.0208 143.276 22.7667C144.474 20.5126 145.095 17.9973 145.084 15.445C145.054 6.83499 137.761 0 129.151 0H111.062C102.451 0 95.162 6.83499 95.128 15.445C95.1177 17.9973 95.7389 20.5124 96.9361 22.7665C98.1334 25.0205 99.8696 26.9435 101.99 28.364C103.602 29.4076 104.931 30.833 105.859 32.5137C106.787 34.1943 107.287 36.0781 107.312 37.998V51.97H25.906C19.0353 51.97 12.446 54.6994 7.58769 59.5577C2.72937 64.416 0 71.0053 0 77.876V292.731C0 299.602 2.72937 306.191 7.58769 311.049C12.446 315.908 19.0353 318.637 25.906 318.637H430.572C437.443 318.637 444.032 315.908 448.89 311.049C453.749 306.191 456.478 299.602 456.478 292.731V77.876C456.478 71.0053 453.749 64.416 448.89 59.5577C444.032 54.6994 437.443 51.97 430.572 51.97ZM119.826 268.137C103.41 268.137 87.3629 263.269 73.7137 254.149C60.0644 245.029 49.4261 232.066 43.144 216.9C36.8619 201.733 35.2182 185.045 38.4208 168.944C41.6234 152.844 49.5284 138.055 61.1361 126.447C72.7439 114.839 87.5331 106.934 103.633 103.732C119.734 100.529 136.422 102.173 151.589 108.455C166.755 114.737 179.718 125.375 188.838 139.025C197.958 152.674 202.826 168.721 202.826 185.137C202.826 196.037 200.679 206.83 196.508 216.9C192.337 226.97 186.223 236.12 178.516 243.827C170.809 251.534 161.659 257.648 151.589 261.819C141.519 265.99 130.726 268.137 119.826 268.137ZM336.652 268.137C320.236 268.137 304.189 263.269 290.54 254.149C276.89 245.029 266.252 232.066 259.97 216.9C253.688 201.733 252.044 185.045 255.247 168.944C258.449 152.844 266.354 138.055 277.962 126.447C289.57 114.839 304.359 106.934 320.46 103.732C336.56 100.529 353.248 102.173 368.415 108.455C383.581 114.737 396.544 125.375 405.664 139.025C414.784 152.674 419.652 168.721 419.652 185.137C419.652 207.15 410.907 228.261 395.342 243.827C379.776 259.392 358.665 268.137 336.652 268.137Z"/>
-                
+                        Fill="#FFFFFF"
+                        Stretch="Uniform"
+                        Data="M430.572 51.97H349.446V37.998C349.472 36.0783 349.971 34.1945 350.899 32.5139C351.827 30.8334 353.156 29.4079 354.767 28.364C356.888 26.9437 358.624 25.0209 359.822 22.7668C361.019 20.5127 361.64 17.9974 361.63 15.445C361.6 6.83499 354.307 0 345.696 0H327.607C318.996 0 311.707 6.83499 311.674 15.445C311.663 17.9973 312.285 20.5126 313.482 22.7667C314.679 25.0208 316.415 26.9437 318.536 28.364C320.147 29.4078 321.476 30.8333 322.405 32.5139C323.333 34.1944 323.832 36.0782 323.858 37.998V51.97H132.9V37.998C132.925 36.0781 133.425 34.1943 134.353 32.5137C135.281 30.833 136.61 29.4076 138.222 28.364C140.343 26.9437 142.079 25.0208 143.276 22.7667C144.474 20.5126 145.095 17.9973 145.084 15.445C145.054 6.83499 137.761 0 129.151 0H111.062C102.451 0 95.162 6.83499 95.128 15.445C95.1177 17.9973 95.7389 20.5124 96.9361 22.7665C98.1334 25.0205 99.8696 26.9435 101.99 28.364C103.602 29.4076 104.931 30.833 105.859 32.5137C106.787 34.1943 107.287 36.0781 107.312 37.998V51.97H25.906C19.0353 51.97 12.446 54.6994 7.58769 59.5577C2.72937 64.416 0 71.0053 0 77.876V292.731C0 299.602 2.72937 306.191 7.58769 311.049C12.446 315.908 19.0353 318.637 25.906 318.637H430.572C437.443 318.637 444.032 315.908 448.89 311.049C453.749 306.191 456.478 299.602 456.478 292.731V77.876C456.478 71.0053 453.749 64.416 448.89 59.5577C444.032 54.6994 437.443 51.97 430.572 51.97ZM119.826 268.137C103.41 268.137 87.3629 263.269 73.7137 254.149C60.0644 245.029 49.4261 232.066 43.144 216.9C36.8619 201.733 35.2182 185.045 38.4208 168.944C41.6234 152.844 49.5284 138.055 61.1361 126.447C72.7439 114.839 87.5331 106.934 103.633 103.732C119.734 100.529 136.422 102.173 151.589 108.455C166.755 114.737 179.718 125.375 188.838 139.025C197.958 152.674 202.826 168.721 202.826 185.137C202.826 196.037 200.679 206.83 196.508 216.9C192.337 226.97 186.223 236.12 178.516 243.827C170.809 251.534 161.659 257.648 151.589 261.819C141.519 265.99 130.726 268.137 119.826 268.137ZM336.652 268.137C320.236 268.137 304.189 263.269 290.54 254.149C276.89 245.029 266.252 232.066 259.97 216.9C253.688 201.733 252.044 185.045 255.247 168.944C258.449 152.844 266.354 138.055 277.962 126.447C289.57 114.839 304.359 106.934 320.46 103.732C336.56 100.529 353.248 102.173 368.415 108.455C383.581 114.737 396.544 125.375 405.664 139.025C414.784 152.674 419.652 168.721 419.652 185.137C419.652 207.15 410.907 228.261 395.342 243.827C379.776 259.392 358.665 268.137 336.652 268.137Z"/>
                 </Grid>
 
-                <Label x:Name="SecondBoardTimer"
-                        Content="{Binding PlayerTurn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        HorizontalAlignment="Center"
-                        SizeChanged="SecondBoardTimer_SizeChanged"
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        Foreground="#000000"
-                        FontSize="16"
-                        />
-            </StackPanel>
+                <Label
+                    x:Name="SecondBoardTimer"
+                    Content="{Binding PlayerTurn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    SizeChanged="SecondBoardTimer_SizeChanged"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Foreground="#FFFFFF"
+                    FontSize="16"
+                    Grid.Column="2"/>
+            </Grid>
         
-            <Border x:Name="FirstBoard"
-                    Grid.Column="0"
-                    Grid.Row="2"
-                    Background="{Binding WhiteTile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    CornerRadius="30"
-                    Margin="24">
-                <StackPanel Orientation="Vertical"
-                            Margin="11">
-                    <StackPanel Orientation="Horizontal"
-                                Margin="25 0 0 0">
-                        <TextBox Text="A"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="B"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="C"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="D"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="E"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="F"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="G"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="H"
-                                   Style="{StaticResource TopCoordinates}"/>
+            <Border
+                x:Name="FirstBoard"
+                Grid.Column="0"
+                Grid.Row="2"
+                Background="{Binding WhiteTile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                CornerRadius="30"
+                Margin="24 0 24 0">
+                <StackPanel
+                    Orientation="Vertical"
+                    Margin="11">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25 0 0 0">
+                        <TextBox
+                            Text="A"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="B"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="C"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="D"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="E"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="F"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="G"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="H"
+                            Style="{StaticResource TopCoordinates}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical"
                                     >
-                            <TextBox Text="8"
-                                       Style="{StaticResource LeftCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBox Text="7"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="6"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="5"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="4"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="3"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="2"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="1"
-                                       Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="8"
+                                Style="{StaticResource LeftCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBox
+                                Text="7"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="6"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="5"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="4"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="3"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="2"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="1"
+                                Style="{StaticResource LeftCoordinates}"/>
 
                         </StackPanel>
                         
-                        <ListBox x:Name="FirstBoardTiles"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Margin="0"
-                                    Padding="-1"
-                                    Height="480"
-                                    Width="480"
-                                    
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    ItemsSource="{Binding Board, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemContainerStyle="{StaticResource TileCanvas}"
-                                    SelectionChanged="FirstBoardTiles_SelectionChanged">
+                        <ListBox
+                            x:Name="FirstBoardTiles"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Margin="0"
+                            Padding="-1"
+                            Height="480"
+                            Width="480"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ItemsSource="{Binding Board, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ItemContainerStyle="{StaticResource TileCanvas}"
+                            SelectionChanged="FirstBoardTiles_SelectionChanged">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal"/>
+                                    <WrapPanel
+                                        Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
-                        <StackPanel Orientation="Vertical"
-                                    >
-                            <TextBox Text="8"
-                                       Style="{StaticResource RightCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBox Text="7"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="6"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="5"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="4"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="3"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="2"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="1"
-                                       Style="{StaticResource RightCoordinates}"/>
+                        <StackPanel
+                            Orientation="Vertical">
+                            <TextBox
+                                Text="8"
+                                Style="{StaticResource RightCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBox
+                                Text="7"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="6"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="5"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="4"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="3"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="2"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="1"
+                                Style="{StaticResource RightCoordinates}"/>
 
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="25 0 0 0">
-                        <TextBox Text="A"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="B"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="C"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="D"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="E"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="F"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="G"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="H"
-                                   Style="{StaticResource BottomCoordinates}"/>
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25 0 0 0">
+                        <TextBox
+                            Text="A"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="B"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="C"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="D"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="E"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="F"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="G"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="H"
+                            Style="{StaticResource BottomCoordinates}"/>
                     </StackPanel>
                 </StackPanel>
 
             </Border>
-            <Border x:Name="SecondBoard"
-                    Grid.Column="0"
-                    Grid.Row="2"
-                    Background="{Binding BlackTile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    CornerRadius="30"
-                    Margin="24"
-                    Visibility="Hidden"
-                    RenderTransformOrigin="0.5,0.5">
-                <StackPanel Orientation="Vertical"
-                            Margin="11">
-                    <StackPanel Orientation="Horizontal"
-                                Margin="25 0 0 0">
-                        <TextBox Text="A"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="B"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="C"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="D"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="E"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="F"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="G"
-                                   Style="{StaticResource TopCoordinates}"/>
-                        <TextBox Text="H"
-                                   Style="{StaticResource TopCoordinates}"/>
+            <Border
+                x:Name="SecondBoard"
+                Grid.Column="0"
+                Grid.Row="2"
+                Background="{Binding BlackTile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                CornerRadius="30"
+                Margin="24 0 24 0"
+                Visibility="Hidden"
+                RenderTransformOrigin="0.5,0.5">
+                <StackPanel 
+                    Orientation="Vertical"
+                    Margin="11">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25 0 0 0">
+                        <TextBox
+                            Text="A"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="B"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="C"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="D"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="E"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="F"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="G"
+                            Style="{StaticResource TopCoordinates}"/>
+                        <TextBox
+                            Text="H"
+                            Style="{StaticResource TopCoordinates}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <StackPanel Orientation="Vertical"
                                     >
-                            <TextBox Text="8"
-                                       Style="{StaticResource LeftCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBox Text="7"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="6"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="5"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="4"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="3"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="2"
-                                       Style="{StaticResource LeftCoordinates}"/>
-                            <TextBox Text="1"
-                                       Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="8"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="7"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="6"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="5"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="4"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="3"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="2"
+                                Style="{StaticResource LeftCoordinates}"/>
+                            <TextBox
+                                Text="1"
+                                Style="{StaticResource LeftCoordinates}"/>
 
                         </StackPanel>
 
-                        <ListBox x:Name="SecondBoardTiles"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Margin="0"
-                                    Padding="-1"
-                                    Height="480"
-                                    Width="480"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    ItemsSource="{Binding Board, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemContainerStyle="{StaticResource TileCanvasRotated}"
-                                    SelectionChanged="FirstBoardTiles_SelectionChanged">
+                        <ListBox
+                            x:Name="SecondBoardTiles"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Margin="0"
+                            Padding="-1"
+                            Height="480"
+                            Width="480"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            ItemsSource="{Binding Board, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedIndex="{Binding SelectedTile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ItemContainerStyle="{StaticResource TileCanvasRotated}"
+                            SelectionChanged="FirstBoardTiles_SelectionChanged">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel Orientation="Horizontal"/>
@@ -307,43 +392,60 @@
                         </ListBox>
                         <StackPanel Orientation="Vertical"
                                     >
-                            <TextBox Text="8"
-                                       Style="{StaticResource RightCoordinates}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBox Text="7"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="6"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="5"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="4"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="3"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="2"
-                                       Style="{StaticResource RightCoordinates}"/>
-                            <TextBox Text="1"
-                                       Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="8"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="7"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="6"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="5"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="4"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="3"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="2"
+                                Style="{StaticResource RightCoordinates}"/>
+                            <TextBox
+                                Text="1"
+                                Style="{StaticResource RightCoordinates}"/>
 
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="25 0 0 0">
-                        <TextBox Text="A"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="B"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="C"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="D"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="E"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="F"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="G"
-                                   Style="{StaticResource BottomCoordinates}"/>
-                        <TextBox Text="H"
-                                   Style="{StaticResource BottomCoordinates}"/>
+                    <StackPanel
+                        Orientation="Horizontal"
+                        Margin="25 0 0 0">
+                        <TextBox
+                            Text="A"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="B"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="C"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="D"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="E"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="F"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="G"
+                            Style="{StaticResource BottomCoordinates}"/>
+                        <TextBox
+                            Text="H"
+                            Style="{StaticResource BottomCoordinates}"/>
                     </StackPanel>
                 </StackPanel>
                 <Border.RenderTransform>
@@ -351,8 +453,6 @@
                 </Border.RenderTransform>
             </Border>
             
-
-
         </Grid>
     </Border>
 </Window>
