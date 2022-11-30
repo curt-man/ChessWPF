@@ -34,9 +34,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="60*"/>
+                <RowDefinition Height="70*"/>
                 <RowDefinition Height="552*"/>
-                <RowDefinition Height="158*"/>
+                <RowDefinition Height="148*"/>
             </Grid.RowDefinitions>
         
             <Border x:Name="HeaderPanel"
@@ -124,7 +124,13 @@
                     Foreground="#FFFFFF"
                     FontSize="16"
                     Grid.Column="0"/>
-
+                <!--<Button
+                    x:Name="ClockButton"
+                    Content="{Binding Clock}"
+                    Click="ClockButton_Click"
+                    >
+                    
+                </Button>-->
                 <Grid 
                     Margin="0"
                     Height="30"
@@ -453,6 +459,7 @@
                 </Border.RenderTransform>
             </Border>
             
+
         </Grid>
     </Border>
 </Window>

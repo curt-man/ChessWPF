@@ -73,5 +73,9 @@ namespace ChessWPF
                 SecondBoard.Visibility = Visibility.Hidden;
         }
 
+        private void ClockButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
