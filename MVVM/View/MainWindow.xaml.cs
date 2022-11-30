@@ -60,7 +60,6 @@ namespace ChessWPF
         private void FirstBoardTiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FirstBoardTimer.Content = ((ListBox)sender).SelectedIndex;
-            
         }
 
 
@@ -73,5 +72,6 @@ namespace ChessWPF
             else
                 SecondBoard.Visibility = Visibility.Hidden;
         }
+
     }
 }

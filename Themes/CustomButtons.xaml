@@ -8,4 +8,13 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
 
     </Style>
+
+    <Style x:Key="HeaderButton" TargetType="Button" BasedOn="{StaticResource StandartButton}">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontFamily" Value="Font Awesome 6 Free Solid"/>
+        <Setter Property="FontSize" Value="20"/>
+
+    </Style>
 </ResourceDictionary>

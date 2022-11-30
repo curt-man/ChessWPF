@@ -8,7 +8,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Themes/TileCanvas.xaml"/>
-                <ResourceDictionary Source="./Themes/HeaderButtons.xaml"/>
                 <ResourceDictionary Source="./Themes/StandartButton.xaml"/>
                 <ResourceDictionary Source="./Themes/BoardCoordinates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
