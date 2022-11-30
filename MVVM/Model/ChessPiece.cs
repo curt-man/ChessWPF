@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +28,6 @@ namespace ChessWPF.MVVM.Model
             return PlayerColor == playerTurn;
         }
 
-        public virtual int[] CalculatePossibleMoves(int position)
-        {
-            return new int[1];
-        }
+        public abstract int[] CalculatePossibleMoves(int position, ObservableCollection<Tile> board);
     }
 }

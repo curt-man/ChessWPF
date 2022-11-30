@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace ChessWPF.MVVM.Model
         {
             
         }
-        public override int[] CalculatePossibleMoves(int position)
+        public override int[] CalculatePossibleMoves(int position, ObservableCollection<Tile> Board)
         {
             int row = position / 8;
             int column = position % 8;
@@ -31,25 +32,46 @@ namespace ChessWPF.MVVM.Model
             if(PlayerColor == PlayerColor.White)
             {
                 if (column != 0)
-                    possibleMoves.Add((row - 1) * 8 + column - 1);
-                possibleMoves.Add((row - 1) * 8 + column);
+                    CheckSidePossbileMove((row - 1) * 8 + column - 1);
+                CheckCenterPossbileMove((row - 1) * 8 + column);
                 if (column != 7)
-                    possibleMoves.Add((row - 1) * 8 + column + 1);
+                    CheckSidePossbileMove((row - 1) * 8 + column + 1);
                 if (!hasMoved)
-                    possibleMoves.Add((row - 2) * 8 + column);
+                    CheckCenterPossbileMove((row - 2) * 8 + column);
             }
             if (PlayerColor == PlayerColor.Black)
             {
                 if (column != 0)
-                    possibleMoves.Add((row + 1) * 8 + column - 1);
-                possibleMoves.Add((row + 1) * 8 + column);
+                    CheckSidePossbileMove((row + 1) * 8 + column - 1);
+                CheckCenterPossbileMove((row + 1) * 8 + column);
                 if (column != 7)
-                    possibleMoves.Add((row + 1) * 8 + column + 1);
+                    CheckSidePossbileMove((row + 1) * 8 + column + 1);
                 if (!hasMoved)
-                    possibleMoves.Add((row + 2) * 8 + column);
+                    CheckCenterPossbileMove((row + 2) * 8 + column);
             }
 
             return possibleMoves.ToArray();
+
+
+
+            void CheckSidePossbileMove(int move)
+            {
+                if (Board[move].isOccupied())
+                {
+                    if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                    {
+                        possibleMoves.Add(move);
+                    }
+                }
+                
+            }
+            void CheckCenterPossbileMove(int move)
+            {
+                if (!Board[move].isOccupied())
+                {
+                    possibleMoves.Add(move);
+                }
+            }
         }
     }
 }

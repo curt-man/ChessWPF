@@ -20,7 +20,7 @@
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
-    <Border Background="#FFFFFF"
+    <Border Background="#283747"
             CornerRadius="30"
             BorderThickness="0"
             BorderBrush="Transparent">
@@ -40,7 +40,7 @@
             <Border x:Name="HeaderPanel"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"
-                    Background="#000000"
+                    Background="#1F2B38"
                     MouseDown="HeaderPanel_MouseDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -75,9 +75,14 @@
                                 Click="MaximizeWindowButton_Click"
                                 Style="{StaticResource HeaderButton}"/>
                         <Button x:Name="CloseWindowButton"
-                                Content="&#xf410;"
                                 Click="CloseWindowButton_Click"
-                                Style="{StaticResource HeaderButton}"/>
+                                Style="{StaticResource HeaderButton}">
+                                <Path
+                                    
+                                    Stretch="Uniform"
+                                    Data="M64 0C28.7 0 0 28.7 0 64V384C0 419.3 28.7 448 64 448H384C419.3 448 448 419.3 448 384V64C448 28.7 419.3 0 384 0H64ZM143 143C152.4 133.6 167.6 133.6 176.9 143L223.9 190L270.9 143C280.3 133.6 295.5 133.6 304.8 143C314.1 152.4 314.2 167.6 304.8 176.9L257.8 223.9L304.8 270.9C314.2 280.3 314.2 295.5 304.8 304.8C295.4 314.1 280.2 314.2 270.9 304.8L223.9 257.8L176.9 304.8C167.5 314.2 152.3 314.2 143 304.8C133.7 295.4 133.6 280.2 143 270.9L190 223.9L143 176.9C133.6 167.5 133.6 152.3 143 143V143Z"/>
+
+                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -125,9 +130,9 @@
                     CornerRadius="30"
                     Margin="24">
                 <StackPanel Orientation="Vertical"
-                            Margin="10">
+                            Margin="11">
                     <StackPanel Orientation="Horizontal"
-                                Margin="20 0 0 0">
+                                Margin="25 0 0 0">
                         <TextBox Text="A"
                                    Style="{StaticResource TopCoordinates}"/>
                         <TextBox Text="B"
@@ -239,9 +244,9 @@
                     Visibility="Hidden"
                     RenderTransformOrigin="0.5,0.5">
                 <StackPanel Orientation="Vertical"
-                            Margin="10">
+                            Margin="11">
                     <StackPanel Orientation="Horizontal"
-                                Margin="20 0 0 0">
+                                Margin="25 0 0 0">
                         <TextBox Text="A"
                                    Style="{StaticResource TopCoordinates}"/>
                         <TextBox Text="B"
@@ -322,7 +327,7 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
-                                Margin="20 0 0 0">
+                                Margin="25 0 0 0">
                         <TextBox Text="A"
                                    Style="{StaticResource BottomCoordinates}"/>
                         <TextBox Text="B"
