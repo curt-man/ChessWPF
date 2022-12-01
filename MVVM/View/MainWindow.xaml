@@ -21,12 +21,11 @@
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
-    <Border
+    <Border 
         Background="#283747"
         CornerRadius="30"
         BorderThickness="0"
         BorderBrush="Transparent">
-        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

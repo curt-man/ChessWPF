@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace ChessWPF.MVVM.Model
 {
-    internal abstract class ChessPiece
+    internal abstract class ChessPiece : ICloneable
     {
         public SolidColorBrush PieceColor { get; set; }
         public PlayerColor PlayerColor { get; set; }
@@ -29,5 +29,7 @@ namespace ChessWPF.MVVM.Model
         }
 
         public abstract int[] CalculatePossibleMoves(int position, ObservableCollection<Tile> board);
+
+        public virtual object Clone() => MemberwiseClone();
     }
 }

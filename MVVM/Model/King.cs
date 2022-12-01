@@ -44,7 +44,7 @@ namespace ChessWPF.MVVM.Model
                 if (move <= 63 && move >= 0)
                 {
                     if (!((column == 0 && move % 8 == 7) || (column == 7 && move % 8 == 0)))
-                        if (!Board[move].isOccupied())
+                        if (!Board[move].IsOccupied())
                         {
                             possibleMoves.Add(move);
                         }
@@ -53,6 +53,178 @@ namespace ChessWPF.MVVM.Model
                             possibleMoves.Add(move);
                         }
                 }
+            }
+        }
+
+        public bool IsInDanger(int position, ObservableCollection<Tile> Board)
+        {
+            int row = position / 8;
+            int column = position % 8;
+
+            List<int> possibleMoves = new List<int>();
+            int move;
+
+            // Bishop
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row - i) * 8 + (column - i);
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row + i) * 8 + (column + i);
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row - i) * 8 + (column + i);
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row + i) * 8 + (column - i);
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+
+            foreach(int tempMove in possibleMoves)
+            {
+                if (Board[tempMove].ChessPiece is not null and (Bishop or Pawn or Queen))
+                    return true;
+            }
+            possibleMoves.Clear();
+
+            // Rook
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row - i) * 8 + column;
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = (row + i) * 8 + column;
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = row * 8 + (column + i);
+                if (move % 8 < column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+            for (int i = 1; i < 8; i++)
+            {
+                move = row * 8 + (column - i);
+                if (move % 8 > column || !(move <= 63 && move >= 0))
+                    break;
+                if (!CanMoveFarther())
+                    break;
+
+            }
+
+            foreach (int tempMove in possibleMoves)
+            {
+                if (Board[tempMove].ChessPiece is not null and (Rook or Queen))
+                    return true;
+            }
+            possibleMoves.Clear();
+
+            // Knight
+            for (int i = -2; i < 5; i += 4)
+            {
+                move = (row + i) * 8 + column + 1;
+                CheckPossbileMove();
+
+                move = (row + i) * 8 + column + -1;
+                CheckPossbileMove();
+            }
+
+            for (int i = -2; i < 5; i += 4)
+            {
+                move = (row + 1) * 8 + column + i;
+                CheckPossbileMove();
+
+                move = (row - 1) * 8 + column + i;
+                CheckPossbileMove();
+
+            }
+
+            foreach (int tempMove in possibleMoves)
+            {
+                if (Board[tempMove].ChessPiece is not null and Knight)
+                    return true;
+            }
+            possibleMoves.Clear();
+
+            return false;
+
+            bool CanMoveFarther()
+            {
+                if (!Board[move].IsOccupied())
+                {
+                    possibleMoves.Add(move);
+                    return true;
+                }
+                else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                {
+                    possibleMoves.Add(move);
+                }
+                return false;
+            }
+
+            void CheckPossbileMove()
+            {
+                if (move <= 63 && move >= 0)
+                {
+                    if (column < 4 && move % 8 < 6)
+                    {
+                        if (!Board[move].IsOccupied())
+                        {
+                            possibleMoves.Add(move);
+                        }
+                        else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        {
+                            possibleMoves.Add(move);
+                        }
+                    }
+
+                    else if (column >= 4 && move % 8 > 1)
+                    {
+                        if (!Board[move].IsOccupied())
+                        {
+                            possibleMoves.Add(move);
+                        }
+                        else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        {
+                            possibleMoves.Add(move);
+                        }
+                    }
+                }
+
             }
         }
     }

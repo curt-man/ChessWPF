@@ -29,6 +29,8 @@ namespace ChessWPF.MVVM.ViewModel
             }
         }
 
+        public int kingIndex;
+
         int selectedTile = -1;
         
         public int SelectedTile
@@ -44,21 +46,50 @@ namespace ChessWPF.MVVM.ViewModel
 
                     if (Board[value].TileColor == possibleToMoveTileColor)
                     {
-                        makeMove(value);
-                        nextTurn();
+                        // Creating a temporary object to hold a piece inside a tile that we clicked
+                        // and if it's not empty, assign it to temp. 
+                        // Trading pieces on selected and clicked tiles.
+                        ChessPiece temp = (Board[value].IsOccupied()) ? Board[value].ChessPiece.Clone() as ChessPiece : null;
+
+                        Board[value].ChessPiece = Board[selectedTile].ChessPiece;
+                        Board[selectedTile].ChessPiece = null;
+
+                        // Just in case if king was moved getting his new position
+                        FindTheKing();
+                        
+                        // If after trading king is still in danger, cancel all changes and deselect clicked tile.
+                        if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
+                        {
+                            Board[selectedTile].ChessPiece = Board[value].ChessPiece;
+                            Board[value].ChessPiece = temp;
+                            DeselectTile();
+                        }
+                        // Else we keep the changes
+                        else
+                        {
+                            Board[value].ChessPiece.hasMoved = true;
+                            DeselectTile();
+                            NextTurn();
+                            FindTheKing();
+                            if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
+                            {
+                                Board[kingIndex].TileColor = checkTileColor;
+                            }
+                        }
+
                     }
                     else
                     {
-                        deselectTile();
+                        DeselectTile();
                     }
                     
                 }
-                else if(Board[value].isOccupied())
+                else if(Board[value].IsOccupied())
                 {
                     if (Board[value].ChessPiece.isSameColor(playerTurn))
                     {
-                        selectTile(value);
-                        showPossibleMoves();
+                        SelectTile(value);
+                        ShowPossibleMoves();
                     }
                         
                     //else
@@ -70,31 +101,24 @@ namespace ChessWPF.MVVM.ViewModel
 
             }
         }
-        void nextTurn()
+        void NextTurn()
         {
             if (PlayerTurn == PlayerColor.White)
                 PlayerTurn = PlayerColor.Black;
             else
                 PlayerTurn = PlayerColor.White;
         }
-        void makeMove(int value)
+        void DeselectTile()
         {
-            Board[value].ChessPiece = Board[selectedTile].ChessPiece;
-            Board[selectedTile].ChessPiece.hasMoved = true;
-            Board[selectedTile].ChessPiece = null;
-            deselectTile();
-        }
-        void deselectTile()
-        {
-            returnTileColors();
+            ReturnTileColors();
             selectedTile = -1;
         }
-        void selectTile(int value)
+        void SelectTile(int value)
         {
             selectedTile = value;
             Board[selectedTile].TileColor = selectedTileColor;
         }
-        void showPossibleMoves()
+        void ShowPossibleMoves()
         {
             int[] possibleMoves = Board[selectedTile].ChessPiece.CalculatePossibleMoves(selectedTile, Board);
             foreach(int move in possibleMoves)
@@ -102,7 +126,7 @@ namespace ChessWPF.MVVM.ViewModel
                 Board[move].TileColor = possibleToMoveTileColor;
             }
         }
-        void returnTileColors()
+        void ReturnTileColors()
         {
 
             for (int i = 0; i < 8; i++)
@@ -115,6 +139,10 @@ namespace ChessWPF.MVVM.ViewModel
                         Board[i * 8 + j].TileColor = blackTile;
                 }
             }
+        }
+        void FindTheKing()
+        {
+            kingIndex = Board.ToList().FindIndex(x => (x.ChessPiece is King && x.ChessPiece.PlayerColor == playerTurn));
         }
 
         #region "Colors"
@@ -144,6 +172,7 @@ namespace ChessWPF.MVVM.ViewModel
 
         private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008065");
         private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008040");
+        private SolidColorBrush checkTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#AC0F4B");
 
 
         // Colors of pieces
@@ -169,6 +198,7 @@ namespace ChessWPF.MVVM.ViewModel
             
             CreateNewBoard();
             CreateChessPieces(whitePiece, blackPiece);
+            FindTheKing();
         }
 
 

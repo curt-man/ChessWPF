@@ -53,7 +53,7 @@ namespace ChessWPF.MVVM.Model
                 {
                     if (column < 4 && move % 8 < 6)
                     {
-                        if (!Board[move].isOccupied())
+                        if (!Board[move].IsOccupied())
                         {
                             possibleMoves.Add(move);
                         }
@@ -65,7 +65,7 @@ namespace ChessWPF.MVVM.Model
                         
                     else if (column >= 4 && move % 8 > 1)
                     {
-                        if (!Board[move].isOccupied())
+                        if (!Board[move].IsOccupied())
                         {
                             possibleMoves.Add(move);
                         }

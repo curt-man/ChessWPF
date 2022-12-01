@@ -68,7 +68,7 @@ namespace ChessWPF.MVVM.Model
 
             bool CanMoveFarther()
             {
-                if (!Board[move].isOccupied())
+                if (!Board[move].IsOccupied())
                 {
                     possibleMoves.Add(move);
                     return true;

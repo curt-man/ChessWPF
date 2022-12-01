@@ -44,7 +44,7 @@ namespace ChessWPF.MVVM.Model
             TileColor = tileColor;
         }
 
-        public bool isOccupied()
+        public bool IsOccupied()
         {
             return ChessPiece != null;
         }

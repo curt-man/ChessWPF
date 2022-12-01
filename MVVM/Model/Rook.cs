@@ -72,7 +72,7 @@ namespace ChessWPF.MVVM.Model
 
             bool CheckPossbileMove()
             {
-                if (!Board[move].isOccupied())
+                if (!Board[move].IsOccupied())
                 {
                     possibleMoves.Add(move);
                     return true;

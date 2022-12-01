@@ -56,7 +56,7 @@ namespace ChessWPF.MVVM.Model
 
             void CheckSidePossbileMove(int move)
             {
-                if (Board[move].isOccupied())
+                if (Board[move].IsOccupied())
                 {
                     if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
                     {
@@ -67,7 +67,7 @@ namespace ChessWPF.MVVM.Model
             }
             void CheckCenterPossbileMove(int move)
             {
-                if (!Board[move].isOccupied())
+                if (!Board[move].IsOccupied())
                 {
                     possibleMoves.Add(move);
                 }
