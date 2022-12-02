@@ -55,39 +55,41 @@ namespace ChessWPF.MVVM.ViewModel
                         Board[value].ChessPiece = Board[selectedTile].ChessPiece;
                         Board[selectedTile].ChessPiece = null;
 
-                        // Just in case if king was moved getting his new position
-                        FindTheKing();
-                        
                         // If after trading king is still in danger, cancel all changes and deselect clicked tile.
+                        FindTheKing();
                         if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
                         {
                             Board[selectedTile].ChessPiece = Board[value].ChessPiece;
                             Board[value].ChessPiece = temp;
-                            // Just in case if king was moved getting his new position
                             FindTheKing();
-                            DeselectTile(true);
+                            DeselectTile((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board));
                         }
                         // Else we keep the changes
                         else
                         {
                             Board[value].ChessPiece.hasMoved = true;
-                            // Just in case if king was moved getting his new position
+
                             FindTheKing();
                             DeselectTile(false);
                             NextTurn();
+
+                            // If after current player's turn another player's king is checked, try find escape
+                            // and If there are not one, announce the winner
                             FindTheKing();
                             if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
                             {
                                 Board[kingIndex].TileColor = checkTileColor;
+                                if(IsCheckMate())
+                                {
+                                    MessageBox.Show($"{playerTurn} lost");
+                                }
                             }
                         }
-
                     }
                     else
                     {
                         DeselectTile((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board));
                     }
-                    
                 }
                 else if(Board[value].IsOccupied())
                 {
@@ -96,16 +98,85 @@ namespace ChessWPF.MVVM.ViewModel
                         SelectTile(value);
                         ShowPossibleMoves();
                     }
-                        
-                    //else
-                    //    MessageBox.Show("It's not your turn!");
                 }
 
 
                 OnPropertyChanged("SelectedTile");
-
             }
         }
+        bool IsCheckMate()
+        {
+            ChessPiece temp;
+            List<int> helpersIndexes = new List<int>();
+            for (int i = 0; i < 64; i++)
+            {
+                if (Board[i].IsOccupied() && Board[i].ChessPiece.isSameColor(playerTurn))
+                    helpersIndexes.Add(i);
+            }
+            for (int i = 0; i < helpersIndexes.Count; i++)
+            {
+                possibleMoves = Board[helpersIndexes[i]].ChessPiece.CalculatePossibleMoves(helpersIndexes[i], Board);
+                for (int j = 0; j < possibleMoves.Length; j++)
+                {
+                    temp = (Board[possibleMoves[j]].IsOccupied()) ? Board[possibleMoves[j]].ChessPiece.Clone() as ChessPiece : null;
+                    Board[possibleMoves[j]].ChessPiece = Board[helpersIndexes[i]].ChessPiece;
+                    Board[helpersIndexes[i]].ChessPiece = null;
+
+                    FindTheKing();
+                    if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
+                    {
+                        Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+                        Board[possibleMoves[j]].ChessPiece = temp;
+                    }
+                    else
+                    {
+                        Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+                        Board[possibleMoves[j]].ChessPiece = temp;
+                        return false;
+                    }
+
+                }
+
+            }
+            return true;
+        }
+
+        //bool IsDraw()
+        //{
+        //    ChessPiece temp;
+        //    List<int> helpersIndexes = new List<int>();
+        //    for (int i = 0; i < 64; i++)
+        //    {
+        //        if (Board[i].IsOccupied() && Board[i].ChessPiece.isSameColor(playerTurn))
+        //            helpersIndexes.Add(i);
+        //    }
+        //    for (int i = 0; i < helpersIndexes.Count; i++)
+        //    {
+        //        possibleMoves = Board[helpersIndexes[i]].ChessPiece.CalculatePossibleMoves(helpersIndexes[i], Board);
+        //        for (int j = 0; j < possibleMoves.Length; j++)
+        //        {
+        //            temp = (Board[possibleMoves[j]].IsOccupied()) ? Board[possibleMoves[j]].ChessPiece.Clone() as ChessPiece : null;
+        //            Board[possibleMoves[j]].ChessPiece = Board[helpersIndexes[i]].ChessPiece;
+        //            Board[helpersIndexes[i]].ChessPiece = null;
+
+        //            FindTheKing();
+        //            if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
+        //            {
+        //                Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+        //                Board[possibleMoves[j]].ChessPiece = temp;
+        //            }
+        //            else
+        //            {
+        //                Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+        //                Board[possibleMoves[j]].ChessPiece = temp;
+        //                return false;
+        //            }
+
+        //        }
+
+        //    }
+        //    return true;
+        //}
         void NextTurn()
         {
             if (PlayerTurn == PlayerColor.White)
