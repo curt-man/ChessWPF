@@ -103,7 +103,7 @@ namespace ChessWPF.MVVM.Model
 
             foreach(int tempMove in possibleMoves)
             {
-                if (Board[tempMove].ChessPiece is not null and (Bishop or Pawn or Queen))
+                if (Board[tempMove].ChessPiece is not null and (Bishop or Queen))
                     return true;
             }
             possibleMoves.Clear();
@@ -180,7 +180,46 @@ namespace ChessWPF.MVVM.Model
             }
             possibleMoves.Clear();
 
+            // Pawn
+            if (PlayerColor == PlayerColor.White)
+            {
+                if (column != 0)
+                    CheckSidePossbileMove((row - 1) * 8 + column - 1);
+                if (column != 7)
+                    CheckSidePossbileMove((row - 1) * 8 + column + 1);
+            }
+            if (PlayerColor == PlayerColor.Black)
+            {
+                if (column != 0)
+                    CheckSidePossbileMove((row + 1) * 8 + column - 1);
+                if (column != 7)
+                    CheckSidePossbileMove((row + 1) * 8 + column + 1);
+            }
+
+            foreach (int tempMove in possibleMoves)
+            {
+                if (Board[tempMove].ChessPiece is not null and Pawn)
+                    return true;
+            }
+            possibleMoves.Clear();
+
             return false;
+
+
+            void CheckSidePossbileMove(int move)
+            {
+                if(move <= 63 && move >= 0)
+                {
+                    if (Board[move].IsOccupied())
+                    {
+                        if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        {
+                            possibleMoves.Add(move);
+                        }
+                    }
+                }
+
+            }
 
             bool CanMoveFarther()
             {

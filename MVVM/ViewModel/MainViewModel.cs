@@ -30,6 +30,7 @@ namespace ChessWPF.MVVM.ViewModel
         }
 
         public int kingIndex;
+        int[] possibleMoves;
 
         int selectedTile = -1;
         
@@ -62,13 +63,17 @@ namespace ChessWPF.MVVM.ViewModel
                         {
                             Board[selectedTile].ChessPiece = Board[value].ChessPiece;
                             Board[value].ChessPiece = temp;
-                            DeselectTile();
+                            // Just in case if king was moved getting his new position
+                            FindTheKing();
+                            DeselectTile(true);
                         }
                         // Else we keep the changes
                         else
                         {
                             Board[value].ChessPiece.hasMoved = true;
-                            DeselectTile();
+                            // Just in case if king was moved getting his new position
+                            FindTheKing();
+                            DeselectTile(false);
                             NextTurn();
                             FindTheKing();
                             if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
@@ -80,7 +85,7 @@ namespace ChessWPF.MVVM.ViewModel
                     }
                     else
                     {
-                        DeselectTile();
+                        DeselectTile((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board));
                     }
                     
                 }
@@ -108,9 +113,9 @@ namespace ChessWPF.MVVM.ViewModel
             else
                 PlayerTurn = PlayerColor.White;
         }
-        void DeselectTile()
+        void DeselectTile(bool kingIsInDanger)
         {
-            ReturnTileColors();
+            ReturnTileColors(kingIsInDanger);
             selectedTile = -1;
         }
         void SelectTile(int value)
@@ -120,25 +125,25 @@ namespace ChessWPF.MVVM.ViewModel
         }
         void ShowPossibleMoves()
         {
-            int[] possibleMoves = Board[selectedTile].ChessPiece.CalculatePossibleMoves(selectedTile, Board);
+            possibleMoves = Board[selectedTile].ChessPiece.CalculatePossibleMoves(selectedTile, Board);
             foreach(int move in possibleMoves)
             {
                 Board[move].TileColor = possibleToMoveTileColor;
             }
         }
-        void ReturnTileColors()
+        void ReturnTileColors(bool kingIsInDanger)
         {
-
-            for (int i = 0; i < 8; i++)
+            Board[selectedTile].TileColor = baseTileColors[selectedTile];
+            for (int i = 0; i < possibleMoves.Length; i++)
             {
-                for (int j = 0; j < 8; j++)
-                {
-                    if (((i + j) % 2) == 0)
-                        Board[i * 8 + j].TileColor = whiteTile;
-                    else
-                        Board[i * 8 + j].TileColor = blackTile;
-                }
+                Board[possibleMoves[i]].TileColor = baseTileColors[possibleMoves[i]];
             }
+            if(kingIsInDanger)
+                Board[kingIndex].TileColor = checkTileColor;
+            else
+                Board[kingIndex].TileColor = baseTileColors[kingIndex];
+
+
         }
         void FindTheKing()
         {
@@ -174,16 +179,30 @@ namespace ChessWPF.MVVM.ViewModel
         private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008040");
         private SolidColorBrush checkTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#AC0F4B");
 
-
         // Colors of pieces
         private SolidColorBrush whitePiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFFFFF");
         private SolidColorBrush blackPiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#000000");
         #endregion
 
+        SolidColorBrush[] baseTileColors = new SolidColorBrush[64];
+        
+        public static void Populate<T>(T[] arr, T value1, T value2)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (((i + j) % 2) == 0)
+                        arr[i * 8 + j] = value1;
+                    else
+                        arr[i * 8 + j] = value2;
+                }
+            }
+        }
+
         // Which color is player
         public PlayerColor firstBoardPlayerColor = PlayerColor.Black;
         public PlayerColor secondBoardPlayerColor = PlayerColor.White;
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -191,11 +210,11 @@ namespace ChessWPF.MVVM.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
         public MainViewModel()
         {
             Board = new ObservableCollection<Tile>();
             
+            Populate<SolidColorBrush>(baseTileColors, whiteTile, blackTile);
             CreateNewBoard();
             CreateChessPieces(whitePiece, blackPiece);
             FindTheKing();
@@ -204,21 +223,12 @@ namespace ChessWPF.MVVM.ViewModel
 
         void CreateNewBoard()
         {
-            for(int i = 0; i<8; i++)
-            {
-                for(int j = 0; j < 8; j++)
-                {
-                    if (((i + j) % 2) == 0)
-                        Board.Add(new Tile(whiteTile, null));
-                    else
-                        Board.Add(new Tile(blackTile, null));
-                }
-            }
+            for(int i = 0; i<64; ++i)
+                Board.Add(new Tile(baseTileColors[i], null));
         }
 
         void CreateChessPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
-
             Board[0].ChessPiece =  new Rook(blackPiece, PlayerColor.Black);
             Board[1].ChessPiece =  new Knight(blackPiece, PlayerColor.Black);
             Board[2].ChessPiece =  new Bishop(blackPiece, PlayerColor.Black);
@@ -252,8 +262,6 @@ namespace ChessWPF.MVVM.ViewModel
             Board[61].ChessPiece = new Bishop(whitePiece, PlayerColor.White);
             Board[62].ChessPiece = new Knight(whitePiece, PlayerColor.White);
             Board[63].ChessPiece = new Rook(whitePiece, PlayerColor.White);
-
-
         }
 
 
