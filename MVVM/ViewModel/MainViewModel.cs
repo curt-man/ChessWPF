@@ -9,22 +9,39 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ChessWPF.MVVM.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
+        BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
         public ObservableCollection<Tile> Board { get; set; }
 
-        private PlayerColor playerTurn = PlayerColor.White;
+        private bool playerTurnBool = false;
 
+        public bool PlayerTurnBool
+        {
+            get
+            { return playerTurnBool; }
+            set
+            {
+                playerTurnBool = value;
+                playerTurn = (PlayerColor)Convert.ToInt32(playerTurnBool);
+                OnPropertyChanged("PlayerTurnBool");
+            }
+        }
+
+
+        private PlayerColor playerTurn = PlayerColor.White;
         public PlayerColor PlayerTurn
         {
             get { return playerTurn; }
             set
             {
                 playerTurn = value;
+                PlayerTurnBool = Convert.ToBoolean(playerTurn);
                 OnPropertyChanged("PlayerTurn");
             }
         }
@@ -79,15 +96,24 @@ namespace ChessWPF.MVVM.ViewModel
                             if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
                             {
                                 Board[kingIndex].TileColor = checkTileColor;
-                                if(IsCheckMate())
+                                if(IsCheckmateOrDraw())
                                 {
-                                    MessageBox.Show($"{playerTurn} lost");
+                                    NextTurn();
+                                    MessageBox.Show($"{playerTurn} win!");
+                                }
+                            }
+                            else
+                            {
+                                if(IsCheckmateOrDraw())
+                                {
+                                    MessageBox.Show($"It's a draw!");
                                 }
                             }
                         }
                     }
                     else
                     {
+                        FindTheKing();
                         DeselectTile((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board));
                     }
                 }
@@ -104,33 +130,34 @@ namespace ChessWPF.MVVM.ViewModel
                 OnPropertyChanged("SelectedTile");
             }
         }
-        bool IsCheckMate()
+
+        bool IsCheckmateOrDraw()
         {
             ChessPiece temp;
-            List<int> helpersIndexes = new List<int>();
+            List<int> alliesIndexes = new List<int>();
             for (int i = 0; i < 64; i++)
             {
                 if (Board[i].IsOccupied() && Board[i].ChessPiece.isSameColor(playerTurn))
-                    helpersIndexes.Add(i);
+                    alliesIndexes.Add(i);
             }
-            for (int i = 0; i < helpersIndexes.Count; i++)
+            for (int i = 0; i < alliesIndexes.Count; i++)
             {
-                possibleMoves = Board[helpersIndexes[i]].ChessPiece.CalculatePossibleMoves(helpersIndexes[i], Board);
+                possibleMoves = Board[alliesIndexes[i]].ChessPiece.CalculatePossibleMoves(alliesIndexes[i], Board);
                 for (int j = 0; j < possibleMoves.Length; j++)
                 {
                     temp = (Board[possibleMoves[j]].IsOccupied()) ? Board[possibleMoves[j]].ChessPiece.Clone() as ChessPiece : null;
-                    Board[possibleMoves[j]].ChessPiece = Board[helpersIndexes[i]].ChessPiece;
-                    Board[helpersIndexes[i]].ChessPiece = null;
+                    Board[possibleMoves[j]].ChessPiece = Board[alliesIndexes[i]].ChessPiece;
+                    Board[alliesIndexes[i]].ChessPiece = null;
 
                     FindTheKing();
                     if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
                     {
-                        Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+                        Board[alliesIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
                         Board[possibleMoves[j]].ChessPiece = temp;
                     }
                     else
                     {
-                        Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
+                        Board[alliesIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
                         Board[possibleMoves[j]].ChessPiece = temp;
                         return false;
                     }
@@ -141,42 +168,7 @@ namespace ChessWPF.MVVM.ViewModel
             return true;
         }
 
-        //bool IsDraw()
-        //{
-        //    ChessPiece temp;
-        //    List<int> helpersIndexes = new List<int>();
-        //    for (int i = 0; i < 64; i++)
-        //    {
-        //        if (Board[i].IsOccupied() && Board[i].ChessPiece.isSameColor(playerTurn))
-        //            helpersIndexes.Add(i);
-        //    }
-        //    for (int i = 0; i < helpersIndexes.Count; i++)
-        //    {
-        //        possibleMoves = Board[helpersIndexes[i]].ChessPiece.CalculatePossibleMoves(helpersIndexes[i], Board);
-        //        for (int j = 0; j < possibleMoves.Length; j++)
-        //        {
-        //            temp = (Board[possibleMoves[j]].IsOccupied()) ? Board[possibleMoves[j]].ChessPiece.Clone() as ChessPiece : null;
-        //            Board[possibleMoves[j]].ChessPiece = Board[helpersIndexes[i]].ChessPiece;
-        //            Board[helpersIndexes[i]].ChessPiece = null;
 
-        //            FindTheKing();
-        //            if ((Board[kingIndex].ChessPiece as King).IsInDanger(kingIndex, Board))
-        //            {
-        //                Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
-        //                Board[possibleMoves[j]].ChessPiece = temp;
-        //            }
-        //            else
-        //            {
-        //                Board[helpersIndexes[i]].ChessPiece = Board[possibleMoves[j]].ChessPiece;
-        //                Board[possibleMoves[j]].ChessPiece = temp;
-        //                return false;
-        //            }
-
-        //        }
-
-        //    }
-        //    return true;
-        //}
         void NextTurn()
         {
             if (PlayerTurn == PlayerColor.White)
@@ -300,16 +292,16 @@ namespace ChessWPF.MVVM.ViewModel
 
         void CreateChessPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
-            Board[0].ChessPiece =  new Rook(blackPiece, PlayerColor.Black);
-            Board[1].ChessPiece =  new Knight(blackPiece, PlayerColor.Black);
-            Board[2].ChessPiece =  new Bishop(blackPiece, PlayerColor.Black);
-            Board[3].ChessPiece =  new King(blackPiece, PlayerColor.Black);
-            Board[4].ChessPiece =  new Queen(blackPiece, PlayerColor.Black);
-            Board[5].ChessPiece =  new Bishop(blackPiece, PlayerColor.Black);
-            Board[6].ChessPiece =  new Knight(blackPiece, PlayerColor.Black);
-            Board[7].ChessPiece =  new Rook(blackPiece, PlayerColor.Black);
-            Board[8].ChessPiece =  new Pawn(blackPiece, PlayerColor.Black);
-            Board[9].ChessPiece =  new Pawn(blackPiece, PlayerColor.Black);
+            Board[0].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
+            Board[1].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
+            Board[2].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
+            Board[3].ChessPiece = new King(blackPiece, PlayerColor.Black);
+            Board[4].ChessPiece = new Queen(blackPiece, PlayerColor.Black);
+            Board[5].ChessPiece = new Bishop(blackPiece, PlayerColor.Black);
+            Board[6].ChessPiece = new Knight(blackPiece, PlayerColor.Black);
+            Board[7].ChessPiece = new Rook(blackPiece, PlayerColor.Black);
+            Board[8].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
+            Board[9].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
             Board[10].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
             Board[11].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
             Board[12].ChessPiece = new Pawn(blackPiece, PlayerColor.Black);
