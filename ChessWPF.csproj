@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <None Remove="Resources\chess-board.ico" />
-    <None Remove="Resources\Font Awesome 6 Free Solid.otf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +25,6 @@
 
   <ItemGroup>
     <Resource Include="Resources\chess-board.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Font Awesome 6 Free Solid.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

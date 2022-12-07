@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace ChessWPF.MVVM.ViewModel
 {
@@ -19,6 +20,7 @@ namespace ChessWPF.MVVM.ViewModel
         BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
         public ObservableCollection<Tile> Board { get; set; }
 
+        #region TurnControl
         private bool playerTurnBool = false;
 
         public bool PlayerTurnBool
@@ -45,6 +47,43 @@ namespace ChessWPF.MVVM.ViewModel
                 OnPropertyChanged("PlayerTurn");
             }
         }
+        #endregion
+
+        DispatcherTimer dispatcherTimer = new DispatcherTimer();
+
+
+        private int firstTimer = 20;
+
+        public string FirstTimer
+        {
+            get
+            {
+
+                return $"{(firstTimer/60):d2}:{(firstTimer % 60):d2}";
+            }
+            set
+            {
+                firstTimer = int.Parse(value);
+                OnPropertyChanged("FirstTimer");
+            }
+        }
+
+
+        private int secondTimer = 1200;
+
+        public string SecondTimer
+        {
+            get
+            {
+                return $"{(secondTimer / 60):d2}:{(secondTimer % 60):d2}";
+            }
+            set
+            {
+                secondTimer = int.Parse(value);
+                OnPropertyChanged("SecondTimer");
+            }
+        }
+
 
         public int kingIndex;
         int[] possibleMoves;
@@ -281,8 +320,36 @@ namespace ChessWPF.MVVM.ViewModel
             CreateNewBoard();
             CreateChessPieces(whitePiece, blackPiece);
             FindTheKing();
+
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Start();
         }
 
+        private void DispatcherTimer_Tick(object? sender, EventArgs e)
+        {
+            if(playerTurn==PlayerColor.White)
+            {
+                firstTimer--;
+                FirstTimer = firstTimer.ToString();
+                if(firstTimer == 0)
+                {
+                    dispatcherTimer.Stop();
+                    MessageBox.Show($"Black won!");
+                }
+            }
+            else
+            {
+                secondTimer--;
+                SecondTimer = secondTimer.ToString();
+                if (secondTimer == 0)
+                {
+                    dispatcherTimer.Stop();
+                    MessageBox.Show($"White won!");
+                }
+            }
+                
+        }
 
         void CreateNewBoard()
         {
