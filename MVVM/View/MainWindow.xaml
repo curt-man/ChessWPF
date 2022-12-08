@@ -235,7 +235,7 @@
                         FontSize="12"/>
                     <TextBox
                         x:Name="BlackPlayerTimer"
-                        TextAlignment="Justify"
+                        TextAlignment="Center"
                         Text="{Binding SecondTimer, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         BorderBrush="#FFFFFF"
                         BorderThickness="0"

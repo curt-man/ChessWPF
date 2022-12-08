@@ -17,7 +17,6 @@ namespace ChessWPF.MVVM.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        BooleanToVisibilityConverter BooleanToVisibilityConverter = new BooleanToVisibilityConverter();
         public ObservableCollection<Tile> Board { get; set; }
 
         #region TurnControl
@@ -52,13 +51,12 @@ namespace ChessWPF.MVVM.ViewModel
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
 
 
-        private int firstTimer = 20;
+        private int firstTimer = 2000;
 
         public string FirstTimer
         {
             get
             {
-
                 return $"{(firstTimer/60):d2}:{(firstTimer % 60):d2}";
             }
             set

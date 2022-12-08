@@ -29,7 +29,6 @@ namespace ChessWPF
         public MainWindow()
         {
             InitializeComponent();
-            
         }
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
