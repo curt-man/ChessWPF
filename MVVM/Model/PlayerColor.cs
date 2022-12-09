@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
     internal enum PlayerColor
     {

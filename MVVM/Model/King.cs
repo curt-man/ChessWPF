@@ -8,9 +8,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
-    internal class King : ChessPiece
+    internal class King : Piece
     {
         public override int Power => 0;
         public King(SolidColorBrush pieceColor, PlayerColor playerColor) : base(pieceColor, playerColor)
@@ -48,7 +48,7 @@ namespace ChessWPF.MVVM.Model
                         {
                             possibleMoves.Add(move);
                         }
-                        else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                         {
                             possibleMoves.Add(move);
                         }
@@ -103,7 +103,7 @@ namespace ChessWPF.MVVM.Model
 
             foreach(int tempMove in possibleMoves)
             {
-                if (Board[tempMove].ChessPiece is not null and (Bishop or Queen))
+                if (Board[tempMove].Piece is not null and (Bishop or Queen))
                     return true;
             }
             possibleMoves.Clear();
@@ -148,7 +148,7 @@ namespace ChessWPF.MVVM.Model
 
             foreach (int tempMove in possibleMoves)
             {
-                if (Board[tempMove].ChessPiece is not null and (Rook or Queen))
+                if (Board[tempMove].Piece is not null and (Rook or Queen))
                     return true;
             }
             possibleMoves.Clear();
@@ -175,7 +175,7 @@ namespace ChessWPF.MVVM.Model
 
             foreach (int tempMove in possibleMoves)
             {
-                if (Board[tempMove].ChessPiece is not null and Knight)
+                if (Board[tempMove].Piece is not null and Knight)
                     return true;
             }
             possibleMoves.Clear();
@@ -198,7 +198,7 @@ namespace ChessWPF.MVVM.Model
 
             foreach (int tempMove in possibleMoves)
             {
-                if (Board[tempMove].ChessPiece is not null and Pawn)
+                if (Board[tempMove].Piece is not null and Pawn)
                     return true;
             }
             possibleMoves.Clear();
@@ -212,7 +212,7 @@ namespace ChessWPF.MVVM.Model
                 {
                     if (Board[move].IsOccupied())
                     {
-                        if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                         {
                             possibleMoves.Add(move);
                         }
@@ -228,7 +228,7 @@ namespace ChessWPF.MVVM.Model
                     possibleMoves.Add(move);
                     return true;
                 }
-                else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                 {
                     possibleMoves.Add(move);
                 }
@@ -245,7 +245,7 @@ namespace ChessWPF.MVVM.Model
                         {
                             possibleMoves.Add(move);
                         }
-                        else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                         {
                             possibleMoves.Add(move);
                         }
@@ -257,7 +257,7 @@ namespace ChessWPF.MVVM.Model
                         {
                             possibleMoves.Add(move);
                         }
-                        else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                         {
                             possibleMoves.Add(move);
                         }

@@ -11,9 +11,9 @@ using System.Windows.Shapes;
 using static System.Net.WebRequestMethods;
 using System.Collections.ObjectModel;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
-    internal class Rook : ChessPiece
+    internal class Rook : Piece
     {
         public override int Power => 5;
         public Rook(SolidColorBrush pieceColor, PlayerColor playerColor) : base(pieceColor, playerColor)
@@ -77,7 +77,7 @@ namespace ChessWPF.MVVM.Model
                     possibleMoves.Add(move);
                     return true;
                 }
-                else if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                 {
                     possibleMoves.Add(move);
                 }

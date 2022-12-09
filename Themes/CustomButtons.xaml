@@ -6,7 +6,6 @@
         <Setter Property="Foreground" Value="#FFFFFF"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-
     </Style>
 
     <Style x:Key="HeaderButton" TargetType="Button" BasedOn="{StaticResource StandartButton}">

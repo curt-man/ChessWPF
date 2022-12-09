@@ -14,8 +14,8 @@
                             BorderThickness="0.05"
                             BorderBrush="Black"
                             >
-                        <Path Data="{Binding ChessPiece.PieceIcon}"
-                              Fill="{Binding ChessPiece.PieceColor}"
+                        <Path Data="{Binding Piece.PieceIcon}"
+                              Fill="{Binding Piece.PieceColor}"
                               Height="36"
                               Stretch="Uniform"
                               Margin="10"
@@ -40,8 +40,8 @@
                             BorderThickness="0.05"
                             BorderBrush="Black"
                             >
-                        <Path Data="{Binding ChessPiece.PieceIcon}"
-                              Fill="{Binding ChessPiece.PieceColor}"
+                        <Path Data="{Binding Piece.PieceIcon}"
+                              Fill="{Binding Piece.PieceColor}"
                               Height="36"
                               Stretch="Uniform"
                               Margin="10"

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
-    internal abstract class ChessPiece : ICloneable
+    internal abstract class Piece : ICloneable
     {
         public SolidColorBrush PieceColor { get; set; }
         public PlayerColor PlayerColor { get; set; }
@@ -17,7 +17,7 @@ namespace ChessWPF.MVVM.Model
         public virtual int Power { get; }
         public bool hasMoved { get; set; } = false;
 
-        public ChessPiece(SolidColorBrush pieceColor, PlayerColor playerColor)
+        public Piece(SolidColorBrush pieceColor, PlayerColor playerColor)
         {
             PieceColor = pieceColor;
             PlayerColor = playerColor;

@@ -8,9 +8,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
-    internal class Pawn : ChessPiece
+    internal class Pawn : Piece
     {
         public override int Power => 1;
         
@@ -58,7 +58,7 @@ namespace ChessWPF.MVVM.Model
             {
                 if (Board[move].IsOccupied())
                 {
-                    if (Board[move].ChessPiece.PlayerColor != Board[position].ChessPiece.PlayerColor)
+                    if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
                     {
                         possibleMoves.Add(move);
                     }

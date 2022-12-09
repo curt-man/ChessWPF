@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace ChessWPF.MVVM.Model
+namespace BoardGamesWPF.MVVM.Model
 {
     internal class Tile : INotifyPropertyChanged
     {
@@ -26,27 +26,27 @@ namespace ChessWPF.MVVM.Model
             }
         }
 
-        private ChessPiece chessPiece;
+        private Piece piece;
 
-        public ChessPiece ChessPiece
+        public Piece Piece
         {
-            get { return chessPiece; }
+            get { return piece; }
             set
             {
-                chessPiece = value;
-                OnPropertyChanged("ChessPiece");
+                piece = value;
+                OnPropertyChanged("Piece");
             }
         }
 
-        public Tile(SolidColorBrush tileColor, ChessPiece chessPiece)
+        public Tile(SolidColorBrush tileColor, Piece piece)
         {
-            ChessPiece = chessPiece;
+            Piece = piece;
             TileColor = tileColor;
         }
 
         public bool IsOccupied()
         {
-            return ChessPiece != null;
+            return Piece != null;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
