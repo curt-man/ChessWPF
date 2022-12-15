@@ -26,9 +26,9 @@ namespace BoardGamesWPF.MVVM.Model
             }
         }
 
-        private Piece piece;
+        private Piece? piece;
 
-        public Piece Piece
+        public Piece? Piece
         {
             get { return piece; }
             set
@@ -50,7 +50,7 @@ namespace BoardGamesWPF.MVVM.Model
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged([CallerMemberName] string? name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }

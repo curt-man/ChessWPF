@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -18,6 +19,21 @@ namespace BoardGamesWPF.MVVM.ViewModel
     internal class MainViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<Tile> Board { get; set; }
+
+
+        private bool rotateBoard = true;
+        public bool RotateBoard
+        {
+            get
+            {
+                return rotateBoard;
+            }
+            set
+            {
+                rotateBoard = value;
+                OnPropertyChanged(nameof(RotateBoard));
+            }
+        }
 
         #region TurnControl
         private bool playerTurnBool = false;
@@ -28,6 +44,8 @@ namespace BoardGamesWPF.MVVM.ViewModel
             { return playerTurnBool; }
             set
             {
+                if (rotateBoard == false)
+                    return;
                 playerTurnBool = value;
                 playerTurn = (PlayerColor)Convert.ToInt32(playerTurnBool);
                 OnPropertyChanged(nameof(PlayerTurnBool));
@@ -51,8 +69,23 @@ namespace BoardGamesWPF.MVVM.ViewModel
         #region Timers
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
 
+        private int commonTimer;
+        public string CommonTimer
+        {
+            get
+            {
+                return commonTimer.ToString();
+            }
+            set
+            {
+                if(value != "")
+                    commonTimer = int.Parse(value)*60;
 
-        private int firstTimer = 2000;
+                OnPropertyChanged(nameof(CommonTimer));
+            }
+        }
+
+        private int firstTimer;
 
         public string FirstTimer
         {
@@ -63,12 +96,13 @@ namespace BoardGamesWPF.MVVM.ViewModel
             set
             {
                 firstTimer = int.Parse(value);
+                
                 OnPropertyChanged(nameof(FirstTimer));
             }
         }
 
 
-        private int secondTimer = 1200;
+        private int secondTimer;
 
         public string SecondTimer
         {
@@ -84,7 +118,86 @@ namespace BoardGamesWPF.MVVM.ViewModel
         }
         #endregion
 
-        private string gameChoice = "Chess";
+        #region Colors
+        // Colors of tiles
+        private SolidColorBrush? whiteTile = (SolidColorBrush?)new BrushConverter().ConvertFrom("#239CB9");
+
+        public SolidColorBrush? WhiteTile
+        {
+            get { return whiteTile; }
+            set
+            {
+                whiteTile = value;
+                OnPropertyChanged(nameof(WhiteTile));
+            }
+        }
+
+        private SolidColorBrush? blackTile = (SolidColorBrush?)new BrushConverter().ConvertFrom("#137188");
+
+        public SolidColorBrush? BlackTile
+        {
+            get { return blackTile; }
+            set
+            {
+                blackTile = value;
+                OnPropertyChanged(nameof(WhiteTile));
+            }
+        }
+
+        private SolidColorBrush? selectedTileColor = (SolidColorBrush?)new BrushConverter().ConvertFrom("#008065");
+        private SolidColorBrush? possibleToMoveTileColor = (SolidColorBrush?)new BrushConverter().ConvertFrom("#008050");
+        private SolidColorBrush? checkTileColor = (SolidColorBrush?)new BrushConverter().ConvertFrom("#AC0F4B");
+
+        // Colors of pieces
+        private SolidColorBrush? whitePiece = (SolidColorBrush?)new BrushConverter().ConvertFrom("#FFFFFF");
+        private SolidColorBrush? blackPiece = (SolidColorBrush?)new BrushConverter().ConvertFrom("#000000");
+
+        SolidColorBrush[] baseTileColors = new SolidColorBrush[64];
+
+        #endregion
+
+
+        private ICommand startButton;
+
+        public ICommand StartButton
+        {
+            get
+            {
+                if (startButton == null)
+                    startButton = new RelayCommand(param => StartGame(), param => true);
+
+                return startButton;
+            }
+        }
+
+        void StartGame()
+        {
+            ClearBoard();
+
+            currentGame = GameChoice;
+
+            switch (currentGame)
+            {
+                case "Chess":
+                    CreateChessPieces(whitePiece, blackPiece);
+                    PlayerTurn = PlayerColor.White;
+                    FindTheKing();
+                    break;
+
+                case "Reversi":
+                    CreateReversiPieces(whitePiece, blackPiece);
+                    PlayerTurn = PlayerColor.Black;
+                    break;
+
+            }
+
+            FirstTimer = CommonTimer;
+            SecondTimer = CommonTimer;
+            Points = "";
+            dispatcherTimer.Start();
+        }
+
+        private string gameChoice;
         public string GameChoice
         {
             get
@@ -98,12 +211,40 @@ namespace BoardGamesWPF.MVVM.ViewModel
             }
         }
 
-        public int kingIndex;
-        public bool isKingInDanger;
+        //private int points;
+        public string Points
+        {
+            get
+            {
+                int whitePoints = 0;
+                for (int i = 0; i < 64; i++)
+                {
+                    if (Board[i].IsOccupied() && Board[i].Piece.isSameColor(PlayerColor.White))
+                        whitePoints += Board[i].Piece.Power;
+                }
+                int blackPoints = 0;
+                for (int i = 0; i < 64; i++)
+                {
+                    if (Board[i].IsOccupied() && Board[i].Piece.isSameColor(PlayerColor.Black))
+                        blackPoints += Board[i].Piece.Power;
+                }
 
-        int[] possibleMoves;
+                return $"{whitePoints} / {blackPoints}";
+
+            }
+            set
+            {
+                OnPropertyChanged(nameof(Points));
+            }
+        }
 
         int selectedTile = -1;
+
+        string currentGame;
+
+        int kingIndex;
+        bool isKingInDanger;
+        int[] possibleMoves;
         
         public int SelectedTile
         {
@@ -113,8 +254,33 @@ namespace BoardGamesWPF.MVVM.ViewModel
             }
             set
             {
-                
-                if(selectedTile != -1)
+                if(currentGame=="Reversi")
+                {
+                    if (!Board[value].IsOccupied())
+                    {
+                        if(PlayerTurn == PlayerColor.White)
+                            Board[value].Piece = new Disk(whitePiece, PlayerTurn);
+                        else
+                            Board[value].Piece = new Disk(blackPiece, PlayerTurn);
+
+                        possibleMoves = Board[value].Piece.CalculatePossibleMoves(value, Board);
+
+                        if(possibleMoves.Length > 0)
+                        {
+                            foreach(int move in possibleMoves)
+                            {
+                                Board[move].Piece.PieceColor = Board[value].Piece.PieceColor;
+                                Board[move].Piece.PlayerColor = Board[value].Piece.PlayerColor;
+                            }
+                            NextTurn();
+                        }
+                        else
+                        {
+                            Board[value].Piece = null;
+                        }
+                    }
+                }
+                else if(selectedTile != -1)
                 {
 
                     if (Board[value].TileColor == possibleToMoveTileColor)
@@ -122,7 +288,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
                         // Creating a temporary object to hold a piece inside a tile that we clicked
                         // and if it's not empty, assign it to temp. 
                         // Trading pieces on selected and clicked tiles.
-                        Piece temp = (Board[value].IsOccupied()) ? Board[value].Piece.Clone() as Piece : null;
+                        Piece? temp = Board[value]?.Piece?.Clone() as Piece;
 
                         Board[value].Piece = Board[selectedTile].Piece;
                         Board[selectedTile].Piece = null;
@@ -181,14 +347,14 @@ namespace BoardGamesWPF.MVVM.ViewModel
                     }
                 }
 
-
+                Points = "";
                 OnPropertyChanged(nameof(SelectedTile));
             }
         }
 
         bool IsCheckmateOrDraw()
         {
-            Piece temp;
+            Piece? temp;
             List<int> alliesIndexes = new List<int>();
             for (int i = 0; i < 64; i++)
             {
@@ -200,7 +366,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
                 possibleMoves = Board[alliesIndexes[i]].Piece.CalculatePossibleMoves(alliesIndexes[i], Board);
                 for (int j = 0; j < possibleMoves.Length; j++)
                 {
-                    temp = (Board[possibleMoves[j]].IsOccupied()) ? Board[possibleMoves[j]].Piece.Clone() as Piece : null;
+                    temp = Board[possibleMoves[j]]?.Piece?.Clone() as Piece;
                     Board[possibleMoves[j]].Piece = Board[alliesIndexes[i]].Piece;
                     Board[alliesIndexes[i]].Piece = null;
 
@@ -269,43 +435,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
             isKingInDanger = (Board[kingIndex].Piece as King).IsInDanger(kingIndex, Board);
         }
 
-        #region "Colors"
-        // Colors of tiles
-        private SolidColorBrush whiteTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#239CB9");
 
-        public SolidColorBrush WhiteTile
-        {
-            get { return whiteTile; }
-            set
-            {
-                whiteTile = value;
-                OnPropertyChanged("WhiteTile");
-            }
-        }
-
-        private SolidColorBrush blackTile = (SolidColorBrush)new BrushConverter().ConvertFrom("#137188");
-
-        public SolidColorBrush BlackTile
-        {
-            get { return blackTile; }
-            set
-            {
-                blackTile = value;
-                OnPropertyChanged("WhiteTile");
-            }
-        }
-
-        private SolidColorBrush selectedTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008065");
-        private SolidColorBrush possibleToMoveTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#008040");
-        private SolidColorBrush checkTileColor = (SolidColorBrush)new BrushConverter().ConvertFrom("#AC0F4B");
-
-        // Colors of pieces
-        private SolidColorBrush whitePiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#FFFFFF");
-        private SolidColorBrush blackPiece = (SolidColorBrush)new BrushConverter().ConvertFrom("#000000");
-        #endregion
-
-        SolidColorBrush[] baseTileColors = new SolidColorBrush[64];
-        
         public static void Populate<T>(T[] arr, T value1, T value2)
         {
             for (int i = 0; i < 8; i++)
@@ -324,25 +454,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
         public PlayerColor firstBoardPlayerColor = PlayerColor.Black;
         public PlayerColor secondBoardPlayerColor = PlayerColor.White;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public MainViewModel()
-        {
-            Board = new ObservableCollection<Tile>();
-            
-            Populate<SolidColorBrush>(baseTileColors, whiteTile, blackTile);
-            CreateNewBoard();
-            CreateChessPieces(whitePiece, blackPiece);
-            FindTheKing();
-
-            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            dispatcherTimer.Tick += DispatcherTimer_Tick;
-            dispatcherTimer.Start();
-        }
+        
 
         private void DispatcherTimer_Tick(object? sender, EventArgs e)
         {
@@ -371,14 +483,23 @@ namespace BoardGamesWPF.MVVM.ViewModel
 
         void CreateNewBoard()
         {
+            Board = new ObservableCollection<Tile>();
             for(int i = 0; i<64; ++i)
                 Board.Add(new Tile(baseTileColors[i], null));
         }
 
+        void ClearBoard()
+        {
+            for (int i = 0; i < 64; ++i)
+            {
+                Board[i].TileColor = baseTileColors[i];
+                Board[i].Piece = null;
+            }
+        }
         void CreateReversiPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
-            Board[27].Piece = new Disk(whitePiece, PlayerColor.Black);
-            Board[28].Piece = new Disk(blackPiece, PlayerColor.White);
+            Board[27].Piece = new Disk(whitePiece, PlayerColor.White);
+            Board[28].Piece = new Disk(blackPiece, PlayerColor.Black);
             Board[35].Piece = new Disk(blackPiece, PlayerColor.Black);
             Board[36].Piece = new Disk(whitePiece, PlayerColor.White);
             
@@ -420,6 +541,20 @@ namespace BoardGamesWPF.MVVM.ViewModel
             Board[63].Piece = new Rook(whitePiece, PlayerColor.White);
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        public MainViewModel()
+        {
+
+            Populate<SolidColorBrush>(baseTileColors, whiteTile, blackTile);
+            CreateNewBoard();
+
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+        }
     }
 }

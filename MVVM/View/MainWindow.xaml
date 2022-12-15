@@ -118,7 +118,6 @@
                     VerticalAlignment="Center"
                     Grid.Column="0">
                     <Label
-                        x:Name="WhitePlayerTurn"
                         Content="WHITE"
                         FontWeight="Bold"
                         HorizontalAlignment="Center"
@@ -136,6 +135,32 @@
                         FontWeight="Bold"
                         Foreground="#FFFFFF"
                         FontSize="20"/>
+                </StackPanel>
+                <StackPanel
+                    Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Grid.Column="0">
+                    <TextBlock
+                        Text="Playerspoints"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        Foreground="#FFFFFF"
+                        FontSize="12"
+                        Width="46"
+                        TextWrapping="Wrap"
+                        Margin="0 0 0 5">
+                    </TextBlock>
+                    <TextBox
+                        x:Name="WhitePlayerPoints"
+                        Text="{Binding Points, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        BorderBrush="#FFFFFF"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        HorizontalAlignment="Left"
+                        FontWeight="Bold"
+                        Foreground="#FFFFFF"
+                        FontSize="16"/>
                 </StackPanel>
                 <Button
                     x:Name="ClockButton"
@@ -239,34 +264,27 @@
                         FontWeight="Bold"
                         Foreground="#FFFFFF"
                         FontSize="20"/>
-                    <!--<ComboBox
-                        x:Name="BlackPlayerTimer"
-                        Width="auto"
-                        IsEditable="False"
-                        BorderThickness="0"
-                        Background="Transparent"
-                        HorizontalAlignment="Center"
-                        FontWeight="Bold"
-                        FontSize="20">
-                        <ComboBoxItem>
-                            1:00
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            5:00
-                        </ComboBoxItem>
-                        <ComboBoxItem
-                            IsSelected="True">
-                            10:00
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            15:00
-                        </ComboBoxItem>
-                        <ComboBoxItem>
-                            30:00
-                        </ComboBoxItem>
-                    </ComboBox>-->
+                    
                 </StackPanel>
-                
+
+                <Border
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Padding="0"
+                    Margin="0"
+                    CornerRadius="20"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    >
+                    <CheckBox
+                    IsChecked="{Binding RotateBoard, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                    Background="Transparent"
+                    BorderBrush="#FFFFFF"
+                    BorderThickness="2"
+                    
+                    />
+                </Border>
 
             </Grid>
         
@@ -549,6 +567,7 @@
                     FontSize="16"
                     FontWeight="SemiBold"
                     Foreground="#000000"
+                    Text="{Binding GameChoice, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                     >
                     <ComboBoxItem
                         Content="Chess"
@@ -565,6 +584,7 @@
                     FontSize="16"
                     FontWeight="SemiBold"
                     Foreground="#000000"
+                    Text="{Binding CommonTimer, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                     >
                     <ComboBoxItem
                         Content="60"/>
@@ -595,6 +615,7 @@
                     VerticalAlignment="Center"
                     Width="120"
                     Padding="6"
+                    Command="{Binding StartButton}"
                     Style="{StaticResource StandartButton}">
                     <Button.Resources>
                         <Style TargetType="Border">
