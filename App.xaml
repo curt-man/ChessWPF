@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="./Themes/CustomButtons.xaml"/>
                 <ResourceDictionary Source="./Themes/BoardCoordinates.xaml"/>
                 <ResourceDictionary Source="./Themes/CustomComboBox.xaml"/>
+                <ResourceDictionary Source="./Themes/CustomCheckBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         

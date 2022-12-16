@@ -18,22 +18,6 @@ namespace BoardGamesWPF.MVVM.ViewModel
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Tile> Board { get; set; }
-
-
-        private bool rotateBoard = true;
-        public bool RotateBoard
-        {
-            get
-            {
-                return rotateBoard;
-            }
-            set
-            {
-                rotateBoard = value;
-                OnPropertyChanged(nameof(RotateBoard));
-            }
-        }
 
         #region TurnControl
         private bool playerTurnBool = false;
@@ -116,6 +100,21 @@ namespace BoardGamesWPF.MVVM.ViewModel
                 OnPropertyChanged(nameof(SecondTimer));
             }
         }
+        private void DispatcherTimer_Tick(object? sender, EventArgs e)
+        {
+            if(playerTurn==PlayerColor.White)
+            {
+                firstTimer--;
+                FirstTimer = firstTimer.ToString();
+            }
+            else
+            {
+                secondTimer--;
+                SecondTimer = secondTimer.ToString();
+            }
+            IsEndOfTheGame(EndOfTheGameReasons.TimeOver);
+        }
+
         #endregion
 
         #region Colors
@@ -156,6 +155,43 @@ namespace BoardGamesWPF.MVVM.ViewModel
 
         #endregion
 
+        #region Resign
+
+        private ICommand whiteResignButton;
+
+        public ICommand WhiteResignButton
+        {
+            get
+            {
+                if (whiteResignButton == null)
+                    whiteResignButton = new RelayCommand(param => Resign(PlayerColor.White), param => !PlayerTurnBool);
+
+                return whiteResignButton;
+            }
+        }
+
+        private ICommand blackResignButton;
+
+        public ICommand BlackResignButton
+        {
+            get
+            {
+                if (blackResignButton == null)
+                    blackResignButton = new RelayCommand(param => Resign(PlayerColor.Black), param => !PlayerTurnBool);
+
+                return blackResignButton;
+            }
+        }
+
+        private void Resign(PlayerColor player)
+        {
+            IsEndOfTheGame(EndOfTheGameReasons.Resign);
+        }
+
+        #endregion
+
+        #region Start
+
 
         private ICommand startButton;
 
@@ -193,9 +229,36 @@ namespace BoardGamesWPF.MVVM.ViewModel
 
             FirstTimer = CommonTimer;
             SecondTimer = CommonTimer;
-            Points = "";
+
+            IsGameRunning = true;
+            
+            WhitePoints = 0;
+            BlackPoints = 0;
+
             dispatcherTimer.Start();
         }
+
+
+        #endregion
+
+        #region Game
+
+        string currentGame;
+
+        private bool isGameRunning = false;
+        public bool IsGameRunning
+        {
+            get
+            {
+                return isGameRunning;
+            }
+            set
+            {
+                isGameRunning = value;
+                OnPropertyChanged(nameof(IsGameRunning));
+            }
+        }
+
 
         private string gameChoice;
         public string GameChoice
@@ -211,41 +274,57 @@ namespace BoardGamesWPF.MVVM.ViewModel
             }
         }
 
-        //private int points;
-        public string Points
+        #endregion
+
+        #region Points
+
+        private int whitePoints;
+        public int WhitePoints
         {
             get
             {
-                int whitePoints = 0;
                 for (int i = 0; i < 64; i++)
                 {
                     if (Board[i].IsOccupied() && Board[i].Piece.isSameColor(PlayerColor.White))
                         whitePoints += Board[i].Piece.Power;
                 }
-                int blackPoints = 0;
+                return whitePoints;
+            }
+            set
+            {
+                whitePoints = 0;
+                OnPropertyChanged(nameof(WhitePoints));
+            }
+        }
+
+        private int blackPoints;
+        public int BlackPoints
+        {
+            get
+            {
                 for (int i = 0; i < 64; i++)
                 {
                     if (Board[i].IsOccupied() && Board[i].Piece.isSameColor(PlayerColor.Black))
                         blackPoints += Board[i].Piece.Power;
                 }
-
-                return $"{whitePoints} / {blackPoints}";
-
+                return blackPoints;
             }
             set
             {
-                OnPropertyChanged(nameof(Points));
+                blackPoints = 0;
+                OnPropertyChanged(nameof(BlackPoints));
             }
         }
 
+
+        #endregion
+
         int selectedTile = -1;
 
-        string currentGame;
-
-        int kingIndex;
-        bool isKingInDanger;
         int[] possibleMoves;
-        
+
+        #region CommonMethods
+
         public int SelectedTile
         {
             get
@@ -273,6 +352,12 @@ namespace BoardGamesWPF.MVVM.ViewModel
                                 Board[move].Piece.PlayerColor = Board[value].Piece.PlayerColor;
                             }
                             NextTurn();
+                            if(!CanMove())
+                            {
+                                NextTurn();
+                                IsEndOfTheGame(EndOfTheGameReasons.GameOver);
+                                    
+                            }
                         }
                         else
                         {
@@ -311,25 +396,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
                             DeselectTile();
                             NextTurn();
 
-                            // If after current player's turn another player's king is checked, try find escape
-                            // and If there are not one, announce the winner
-                            FindTheKing();
-                            if (isKingInDanger)
-                            {
-                                Board[kingIndex].TileColor = checkTileColor;
-                                if(IsCheckmateOrDraw())
-                                {
-                                    NextTurn();
-                                    MessageBox.Show($"{playerTurn} win!");
-                                }
-                            }
-                            else
-                            {
-                                if(IsCheckmateOrDraw())
-                                {
-                                    MessageBox.Show($"It's a draw!");
-                                }
-                            }
+                            IsEndOfTheGame(EndOfTheGameReasons.GameOver);
                         }
                     }
                     else
@@ -347,10 +414,142 @@ namespace BoardGamesWPF.MVVM.ViewModel
                     }
                 }
 
-                Points = "";
+                WhitePoints = 0;
+                BlackPoints = 0;
                 OnPropertyChanged(nameof(SelectedTile));
             }
         }
+
+        void IsEndOfTheGame(EndOfTheGameReasons reason)
+        {
+            switch(reason)
+            {
+                case EndOfTheGameReasons.TimeOver:
+                    if (firstTimer <= 0)
+                        MessageBox.Show($"Black won on time!");
+                    else if (secondTimer <= 0)
+                        MessageBox.Show($"White won on time!");
+                    else
+                        return;
+                    break;
+
+                case EndOfTheGameReasons.GameOver:
+                    switch(currentGame)
+                    {
+                        case "Reversi":
+                            if (!CanMove())
+                            {
+                                if (WhitePoints > BlackPoints)
+                                    MessageBox.Show($"White player won with score {whitePoints} to {blackPoints}");
+                                else if (WhitePoints < BlackPoints)
+                                    MessageBox.Show($"Black player won with score {blackPoints} to {whitePoints}");
+                                else
+                                    MessageBox.Show($"It's a draw with score {whitePoints} to {blackPoints}");
+                            }
+                            else
+                            {
+                                MessageBox.Show($"There is no possible moves for you. Move transition. Now it's {playerTurn} player turn to move");
+                                return;
+                            }
+                            
+                            break;
+
+
+                        case "Chess":
+
+                            // If after current player's turn another player's king is checked, try find escape
+                            // and If there are not one, announce the winner
+                            FindTheKing();
+                            if (isKingInDanger)
+                            {
+                                Board[kingIndex].TileColor = checkTileColor;
+                                if (IsCheckmateOrDraw())
+                                {
+                                    NextTurn();
+                                    MessageBox.Show($"{playerTurn} won!");
+                                }
+                                else
+                                    return;
+                            }
+                            else
+                            {
+                                if (IsCheckmateOrDraw())
+                                {
+                                    NextTurn();
+                                    MessageBox.Show($"It's a draw!");
+                                }
+                                else
+                                    return;
+                            }
+                            break;
+                    }
+                    break;
+
+
+                case EndOfTheGameReasons.Resign:
+                    if (PlayerTurn == PlayerColor.White)
+                        MessageBox.Show($"Black won by my resignation!");
+                    else
+                        MessageBox.Show($"White won by my resignation!");
+                    break;
+            }
+
+            dispatcherTimer.Stop();
+            
+            IsGameRunning = false;
+        }
+
+        void ShowPossibleMoves()
+        {
+            possibleMoves = Board[selectedTile].Piece.CalculatePossibleMoves(selectedTile, Board);
+            foreach(int move in possibleMoves)
+            {
+                Board[move].TileColor = possibleToMoveTileColor;
+            }
+        }
+
+        #endregion
+
+        #region ReversiMethods
+
+        bool CanMove()
+        {
+            List<int> emptyTiles = new List<int>();
+            for (int i = 0; i < 64; i++)
+            {
+                if (!Board[i].IsOccupied())
+                    emptyTiles.Add(i);
+            }
+            for (int i = 0; i < emptyTiles.Count; i++)
+            {
+                if (!Board[i].IsOccupied())
+                {
+                    if (PlayerTurn == PlayerColor.White)
+                        Board[i].Piece = new Disk(whitePiece, PlayerTurn);
+                    else
+                        Board[i].Piece = new Disk(blackPiece, PlayerTurn);
+
+                    possibleMoves = Board[i].Piece.CalculatePossibleMoves(i, Board);
+
+                    if (possibleMoves.Length > 0)
+                    {
+                        Board[i].Piece = null;
+                        return true;
+                    }
+                    
+                }
+
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region ChessMethods
+
+        int kingIndex;
+
+        bool isKingInDanger;
 
         bool IsCheckmateOrDraw()
         {
@@ -389,7 +588,6 @@ namespace BoardGamesWPF.MVVM.ViewModel
             return true;
         }
 
-
         void NextTurn()
         {
             if (PlayerTurn == PlayerColor.White)
@@ -397,24 +595,19 @@ namespace BoardGamesWPF.MVVM.ViewModel
             else
                 PlayerTurn = PlayerColor.White;
         }
+
         void DeselectTile()
         {
             ReturnTileColors();
             selectedTile = -1;
         }
+
         void SelectTile(int value)
         {
             selectedTile = value;
             Board[selectedTile].TileColor = selectedTileColor;
         }
-        void ShowPossibleMoves()
-        {
-            possibleMoves = Board[selectedTile].Piece.CalculatePossibleMoves(selectedTile, Board);
-            foreach(int move in possibleMoves)
-            {
-                Board[move].TileColor = possibleToMoveTileColor;
-            }
-        }
+
         void ReturnTileColors()
         {
             Board[selectedTile].TileColor = baseTileColors[selectedTile];
@@ -429,13 +622,32 @@ namespace BoardGamesWPF.MVVM.ViewModel
 
 
         }
+
         void FindTheKing()
         {
             kingIndex = Board.ToList().FindIndex(x => (x.Piece is King && x.Piece.PlayerColor == playerTurn));
             isKingInDanger = (Board[kingIndex].Piece as King).IsInDanger(kingIndex, Board);
         }
 
+        #endregion
 
+        #region Board
+
+        public ObservableCollection<Tile> Board { get; set; }
+
+        private bool rotateBoard = true;
+        public bool RotateBoard
+        {
+            get
+            {
+                return rotateBoard;
+            }
+            set
+            {
+                rotateBoard = value;
+                OnPropertyChanged(nameof(RotateBoard));
+            }
+        }
         public static void Populate<T>(T[] arr, T value1, T value2)
         {
             for (int i = 0; i < 8; i++)
@@ -448,37 +660,6 @@ namespace BoardGamesWPF.MVVM.ViewModel
                         arr[i * 8 + j] = value2;
                 }
             }
-        }
-
-        // Which color is player
-        public PlayerColor firstBoardPlayerColor = PlayerColor.Black;
-        public PlayerColor secondBoardPlayerColor = PlayerColor.White;
-
-        
-
-        private void DispatcherTimer_Tick(object? sender, EventArgs e)
-        {
-            if(playerTurn==PlayerColor.White)
-            {
-                firstTimer--;
-                FirstTimer = firstTimer.ToString();
-                if(firstTimer == 0)
-                {
-                    dispatcherTimer.Stop();
-                    MessageBox.Show($"Black won!");
-                }
-            }
-            else
-            {
-                secondTimer--;
-                SecondTimer = secondTimer.ToString();
-                if (secondTimer == 0)
-                {
-                    dispatcherTimer.Stop();
-                    MessageBox.Show($"White won!");
-                }
-            }
-                
         }
 
         void CreateNewBoard()
@@ -496,6 +677,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
                 Board[i].Piece = null;
             }
         }
+
         void CreateReversiPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
             Board[27].Piece = new Disk(whitePiece, PlayerColor.White);
@@ -504,6 +686,7 @@ namespace BoardGamesWPF.MVVM.ViewModel
             Board[36].Piece = new Disk(whitePiece, PlayerColor.White);
             
         }
+
         void CreateChessPieces(SolidColorBrush whitePiece, SolidColorBrush blackPiece)
         {
             Board[0].Piece = new Rook(blackPiece, PlayerColor.Black);
@@ -541,11 +724,17 @@ namespace BoardGamesWPF.MVVM.ViewModel
             Board[63].Piece = new Rook(whitePiece, PlayerColor.White);
         }
 
+        #endregion
+
+        #region INotifyPropertyChange
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
 
         public MainViewModel()
         {
