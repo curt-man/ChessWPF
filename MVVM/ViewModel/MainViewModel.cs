@@ -164,11 +164,12 @@ namespace BoardGamesWPF.MVVM.ViewModel
             get
             {
                 if (whiteResignButton == null)
-                    whiteResignButton = new RelayCommand(param => Resign(PlayerColor.White), param => !PlayerTurnBool);
+                    whiteResignButton = new RelayCommand(param => Resign(), param => playerTurn == PlayerColor.White && isGameRunning);
 
                 return whiteResignButton;
             }
         }
+
 
         private ICommand blackResignButton;
 
@@ -177,13 +178,14 @@ namespace BoardGamesWPF.MVVM.ViewModel
             get
             {
                 if (blackResignButton == null)
-                    blackResignButton = new RelayCommand(param => Resign(PlayerColor.Black), param => !PlayerTurnBool);
+                    blackResignButton = new RelayCommand(param => Resign(), param => playerTurn == PlayerColor.Black && isGameRunning);
 
                 return blackResignButton;
             }
         }
 
-        private void Resign(PlayerColor player)
+
+        private void Resign()
         {
             IsEndOfTheGame(EndOfTheGameReasons.Resign);
         }
@@ -439,9 +441,11 @@ namespace BoardGamesWPF.MVVM.ViewModel
                         case "Reversi":
                             if (!CanMove())
                             {
-                                if (WhitePoints > BlackPoints)
+                                WhitePoints = 0;
+                                BlackPoints = 0;
+                                if (whitePoints > blackPoints)
                                     MessageBox.Show($"White player won with score {whitePoints} to {blackPoints}");
-                                else if (WhitePoints < BlackPoints)
+                                else if (whitePoints < blackPoints)
                                     MessageBox.Show($"Black player won with score {blackPoints} to {whitePoints}");
                                 else
                                     MessageBox.Show($"It's a draw with score {whitePoints} to {blackPoints}");
@@ -522,22 +526,20 @@ namespace BoardGamesWPF.MVVM.ViewModel
             }
             for (int i = 0; i < emptyTiles.Count; i++)
             {
-                if (!Board[i].IsOccupied())
+                if (PlayerTurn == PlayerColor.White)
+                    Board[emptyTiles[i]].Piece = new Disk(whitePiece, PlayerTurn);
+                else
+                    Board[emptyTiles[i]].Piece = new Disk(blackPiece, PlayerTurn);
+
+                possibleMoves = Board[emptyTiles[i]].Piece.CalculatePossibleMoves(emptyTiles[i], Board);
+
+                if (possibleMoves.Length > 0)
                 {
-                    if (PlayerTurn == PlayerColor.White)
-                        Board[i].Piece = new Disk(whitePiece, PlayerTurn);
-                    else
-                        Board[i].Piece = new Disk(blackPiece, PlayerTurn);
-
-                    possibleMoves = Board[i].Piece.CalculatePossibleMoves(i, Board);
-
-                    if (possibleMoves.Length > 0)
-                    {
-                        Board[i].Piece = null;
-                        return true;
-                    }
-                    
+                    Board[emptyTiles[i]].Piece = null;
+                    return true;
                 }
+                Board[emptyTiles[i]].Piece = null;
+
 
             }
             return false;
