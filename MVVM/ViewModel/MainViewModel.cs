@@ -367,54 +367,66 @@ namespace BoardGamesWPF.MVVM.ViewModel
                         }
                     }
                 }
-                else if(selectedTile != -1)
+                else if(currentGame == "Chess")
                 {
-
-                    if (Board[value].TileColor == possibleToMoveTileColor)
+                    if (selectedTile != -1)
                     {
-                        // Creating a temporary object to hold a piece inside a tile that we clicked
-                        // and if it's not empty, assign it to temp. 
-                        // Trading pieces on selected and clicked tiles.
-                        Piece? temp = Board[value]?.Piece?.Clone() as Piece;
 
-                        Board[value].Piece = Board[selectedTile].Piece;
-                        Board[selectedTile].Piece = null;
-
-                        // If after trading king is still in danger, cancel all changes and deselect clicked tile.
-                        FindTheKing();
-                        if (isKingInDanger)
+                        if (Board[value].TileColor == possibleToMoveTileColor)
                         {
-                            Board[selectedTile].Piece = Board[value].Piece;
-                            Board[value].Piece = temp;
+                            // Creating a temporary object to hold a piece inside a tile that we clicked
+                            // and if it's not empty, assign it to temp. 
+                            // Trading pieces on selected and clicked tiles.
+                            Piece? temp = Board[value]?.Piece?.Clone() as Piece;
+
+                            Board[value].Piece = Board[selectedTile].Piece;
+                            Board[selectedTile].Piece = null;
+
+                            // If after trading king is still in danger, cancel all changes and deselect clicked tile.
                             FindTheKing();
-                            DeselectTile();
+                            if (isKingInDanger)
+                            {
+                                Board[selectedTile].Piece = Board[value].Piece;
+                                Board[value].Piece = temp;
+                                FindTheKing();
+                                DeselectTile();
+                            }
+                            // Else we keep the changes
+                            else
+                            {
+                                Board[value].Piece.hasMoved = true;
+
+                                FindTheKing();
+                                DeselectTile();
+                                NextTurn();
+
+                                if (Board[value].Piece is Pawn promotionPone)
+                                {
+                                    if(value >= 56 || value <= 7)
+                                    {
+                                        Board[value].Piece = new King(playerTurn==PlayerColor.White ? whitePiece : blackPiece, PlayerTurn);
+                                    }
+                                }
+
+                                IsEndOfTheGame(EndOfTheGameReasons.GameOver);
+                            }
                         }
-                        // Else we keep the changes
                         else
                         {
-                            Board[value].Piece.hasMoved = true;
-
                             FindTheKing();
                             DeselectTile();
-                            NextTurn();
-
-                            IsEndOfTheGame(EndOfTheGameReasons.GameOver);
                         }
                     }
-                    else
+                    else if (Board[value].IsOccupied())
                     {
-                        FindTheKing();
-                        DeselectTile();
+                        if (Board[value].Piece.isSameColor(playerTurn))
+                        {
+                            SelectTile(value);
+                            ShowPossibleMoves();
+                        }
                     }
                 }
-                else if(Board[value].IsOccupied())
-                {
-                    if (Board[value].Piece.isSameColor(playerTurn))
-                    {
-                        SelectTile(value);
-                        ShowPossibleMoves();
-                    }
-                }
+                
 
                 WhitePoints = 0;
                 BlackPoints = 0;
