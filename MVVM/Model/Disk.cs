@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace BoardGamesWPF.MVVM.Model
@@ -30,92 +26,77 @@ namespace BoardGamesWPF.MVVM.Model
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 > column || !CanMoveFurther())
                     break;
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 < column || !CanMoveFurther())
                     break;
 
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 < column || !CanMoveFurther())
                     break;
 
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
 
             // Rook
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + column;
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + column;
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
 
             return possibleMoves.ToArray();
 
 
-            bool CanMoveFarther()
+            bool CanMoveFurther()
             {
-                if (Board[move].Piece != null)
+                if (move <= 63 && move >= 0)
                 {
-                    if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
+                    if (Board[move].Piece != null)
                     {
-                        maybePossibleMoves.Add(move);
-                        return true;
-                    }
-                    else if(maybePossibleMoves.Count>0)
-                    {
-                        possibleMoves.AddRange(maybePossibleMoves);
+                        if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
+                        {
+                            maybePossibleMoves.Add(move);
+                            return true;
+                        }
+                        else if (maybePossibleMoves.Count > 0)
+                        {
+                            possibleMoves.AddRange(maybePossibleMoves);
+                        }
                     }
                 }
                 maybePossibleMoves.Clear();

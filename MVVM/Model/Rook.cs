@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using static System.Net.WebRequestMethods;
 using System.Collections.ObjectModel;
 
 namespace BoardGamesWPF.MVVM.Model
@@ -34,52 +25,46 @@ namespace BoardGamesWPF.MVVM.Model
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + column;
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CheckPossbileMove())
-                    break;
-                
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + column;
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CheckPossbileMove())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CheckPossbileMove())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CheckPossbileMove())
-                    break;
-
             }
 
             return possibleMoves.ToArray();
 
-            bool CheckPossbileMove()
+            bool CanMoveFurther()
             {
-                if (!Board[move].IsOccupied())
+                if (move <= 63 && move >= 0)
                 {
-                    possibleMoves.Add(move);
-                    return true;
-                }
-                else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
-                {
-                    possibleMoves.Add(move);
+                    if (!Board[move].IsOccupied())
+                    {
+                        possibleMoves.Add(move);
+                        return true;
+                    }
+                    else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
+                    {
+                        possibleMoves.Add(move);
+                    }
                 }
                 return false;
             }

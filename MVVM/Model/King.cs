@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
 
@@ -23,38 +17,56 @@ namespace BoardGamesWPF.MVVM.Model
         {
             int row = position / 8;
             int column = position % 8;
-            int move;
+
             List<int> possibleMoves = new List<int>();
-            for (int i = -1; i<2; i++)
-            {
-                for(int j = -1; j<2; j++)
-                {
-                    move = (i + row) * 8 + j + column;
-                    CheckPossibleMove();
-                }
-            }
-            possibleMoves.RemoveAll(x => x == position);
+            int move;
+
+            move = (row - 1) * 8 + (column - 1);
+            if (move % 8 > column || CheckPossibleMove()) { }
+
+            move = (row + 1) * 8 + (column + 1);
+            if (move % 8 < column || CheckPossibleMove()) { }
+
+            move = (row - 1) * 8 + (column + 1);
+            if (move % 8 < column || CheckPossibleMove()) { }
+
+            move = (row + 1) * 8 + (column - 1);
+            if (move % 8 > column || CheckPossibleMove()) { }
+
+            move = (row - 1) * 8 + column;
+            if (move % 8 > column || CheckPossibleMove()) { }
+
+            move = (row + 1) * 8 + column;
+            if (move % 8 < column || CheckPossibleMove()) { }
+
+            move = row * 8 + (column + 1);
+            if (move % 8 < column || CheckPossibleMove()) { }
+
+            move = row * 8 + (column - 1);
+            if (move % 8 > column || CheckPossibleMove()) { }
 
             return possibleMoves.ToArray();
 
 
 
-            void CheckPossibleMove()
+            bool CheckPossibleMove()
             {
                 if (move <= 63 && move >= 0)
                 {
-                    if (!((column == 0 && move % 8 == 7) || (column == 7 && move % 8 == 0)))
-                        if (!Board[move].IsOccupied())
-                        {
-                            possibleMoves.Add(move);
-                        }
-                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
-                        {
-                            possibleMoves.Add(move);
-                        }
+                    if (!Board[move].IsOccupied())
+                    {
+                        possibleMoves.Add(move);
+                        return true;
+                    }
+                    else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
+                    {
+                        possibleMoves.Add(move);
+                    }
                 }
+                return false;
             }
         }
+
 
         public bool IsInDanger(int position, ObservableCollection<Tile> Board)
         {
@@ -64,41 +76,32 @@ namespace BoardGamesWPF.MVVM.Model
             List<int> possibleMoves = new List<int>();
             int move;
 
-            // Bishop
+            // Bishop or Queen
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 > column || !CanMoveFurther())
                     break;
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 < column || !CanMoveFurther())
                     break;
 
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
-                    break;
-                if (!CanMoveFarther())
+                if (move % 8 < column || !CanMoveFurther())
                     break;
 
             }
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
 
             foreach(int tempMove in possibleMoves)
@@ -108,42 +111,33 @@ namespace BoardGamesWPF.MVVM.Model
             }
             possibleMoves.Clear();
 
-            // Rook
+            // Rook or Queen
             for (int i = 1; i < 8; i++)
             {
                 move = (row - i) * 8 + column;
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = (row + i) * 8 + column;
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column + i);
-                if (move % 8 < column || !(move <= 63 && move >= 0))
+                if (move % 8 < column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
+
             for (int i = 1; i < 8; i++)
             {
                 move = row * 8 + (column - i);
-                if (move % 8 > column || !(move <= 63 && move >= 0))
+                if (move % 8 > column || !CanMoveFurther())
                     break;
-                if (!CanMoveFarther())
-                    break;
-
             }
 
             foreach (int tempMove in possibleMoves)
@@ -203,6 +197,38 @@ namespace BoardGamesWPF.MVVM.Model
             }
             possibleMoves.Clear();
 
+
+            move = (row - 1) * 8 + (column - 1);
+            if (move % 8 > column || CanMoveFurther()) { }
+
+            move = (row + 1) * 8 + (column + 1);
+            if (move % 8 < column || CanMoveFurther()) { }
+
+            move = (row - 1) * 8 + (column + 1);
+            if (move % 8 < column || CanMoveFurther()) { }
+
+            move = (row + 1) * 8 + (column - 1);
+            if (move % 8 > column || CanMoveFurther()) { }
+
+            move = (row - 1) * 8 + column;
+            if (move % 8 > column || CanMoveFurther()) { }
+
+            move = (row + 1) * 8 + column;
+            if (move % 8 < column || CanMoveFurther()) { }
+
+            move = row * 8 + (column + 1);
+            if (move % 8 < column || CanMoveFurther()) { }
+
+            move = row * 8 + (column - 1);
+            if (move % 8 > column || CanMoveFurther()) { }
+
+            foreach (int tempMove in possibleMoves)
+            {
+                if (Board[tempMove].Piece is not null and (King))
+                    return true;
+            }
+            possibleMoves.Clear();
+
             return false;
 
 
@@ -221,16 +247,19 @@ namespace BoardGamesWPF.MVVM.Model
 
             }
 
-            bool CanMoveFarther()
+            bool CanMoveFurther()
             {
-                if (!Board[move].IsOccupied())
+                if (move <= 63 && move >= 0)
                 {
-                    possibleMoves.Add(move);
-                    return true;
-                }
-                else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
-                {
-                    possibleMoves.Add(move);
+                    if (!Board[move].IsOccupied())
+                    {
+                        possibleMoves.Add(move);
+                        return true;
+                    }
+                    else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
+                    {
+                        possibleMoves.Add(move);
+                    }
                 }
                 return false;
             }
@@ -239,19 +268,7 @@ namespace BoardGamesWPF.MVVM.Model
             {
                 if (move <= 63 && move >= 0)
                 {
-                    if (column < 4 && move % 8 < 6)
-                    {
-                        if (!Board[move].IsOccupied())
-                        {
-                            possibleMoves.Add(move);
-                        }
-                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
-                        {
-                            possibleMoves.Add(move);
-                        }
-                    }
-
-                    else if (column >= 4 && move % 8 > 1)
+                    if ((column < 4 && move % 8 < 6) || (column >= 4 && move % 8 > 1))
                     {
                         if (!Board[move].IsOccupied())
                         {
@@ -263,7 +280,6 @@ namespace BoardGamesWPF.MVVM.Model
                         }
                     }
                 }
-
             }
         }
     }

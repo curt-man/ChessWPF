@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace BoardGamesWPF.MVVM.Model
@@ -27,7 +22,7 @@ namespace BoardGamesWPF.MVVM.Model
 
             for (int i = -2; i < 5; i += 4)
             {
-                move = (row+i)*8 + column +1;
+                move = (row + i) * 8 + column + 1;
                 CheckPossbileMove();
 
                 move = (row + i) * 8 + column + -1;
@@ -51,19 +46,7 @@ namespace BoardGamesWPF.MVVM.Model
             {
                 if (move <= 63 && move >= 0)
                 {
-                    if (column < 4 && move % 8 < 6)
-                    {
-                        if (!Board[move].IsOccupied())
-                        {
-                            possibleMoves.Add(move);
-                        }
-                        else if (Board[move].Piece.PlayerColor != Board[position].Piece.PlayerColor)
-                        {
-                            possibleMoves.Add(move);
-                        }
-                    }
-                        
-                    else if (column >= 4 && move % 8 > 1)
+                    if ((column < 4 && move % 8 < 6) || (column >= 4 && move % 8 > 1))
                     {
                         if (!Board[move].IsOccupied())
                         {
@@ -75,7 +58,6 @@ namespace BoardGamesWPF.MVVM.Model
                         }
                     }
                 }
-                
             }
         }
     }

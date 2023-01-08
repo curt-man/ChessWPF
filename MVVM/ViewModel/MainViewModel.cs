@@ -2,14 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -398,15 +394,15 @@ namespace BoardGamesWPF.MVVM.ViewModel
 
                                 FindTheKing();
                                 DeselectTile();
-                                NextTurn();
-
                                 if (Board[value].Piece is Pawn promotionPone)
                                 {
                                     if(value >= 56 || value <= 7)
                                     {
-                                        Board[value].Piece = new King(playerTurn==PlayerColor.White ? whitePiece : blackPiece, PlayerTurn);
+                                        Board[value].Piece = new Queen(playerTurn==PlayerColor.White ? whitePiece : blackPiece, PlayerTurn);
                                     }
                                 }
+                                NextTurn();
+
 
                                 IsEndOfTheGame(EndOfTheGameReasons.GameOver);
                             }
